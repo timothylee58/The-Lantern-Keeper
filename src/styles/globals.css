@@ -1,0 +1,1766 @@
+@import 'tailwindcss';
+@import './base.css';
+@import './tokens.css';
+@source '../**/*.{ts,tsx}';
+body {
+  background: var(--indigo-950);
+  font-family: var(--body);
+}
+header {
+  background: #0b1026f5;
+}
+.lantern-return {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 44px;
+  padding: 6px clamp(20px, 5vw, 80px);
+  color: var(--gold);
+  font: 600 14px var(--body);
+  text-decoration: none;
+}
+.lantern-return:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.hero-art {
+  background-image: url('/hantu-codex/art/village.webp');
+  background-position: 60% center;
+}
+.hero-shade {
+  background:
+    linear-gradient(90deg, #0b1026ed 0%, #0b1026b5 35%, #0b102612 75%),
+    linear-gradient(0deg, #0b1026 0%, transparent 35%);
+}
+.hero-copy h1 {
+  font-size: clamp(70px, 7.4vw, 112px);
+}
+.hero-copy p {
+  color: #c7c6cd;
+}
+.hero-copy > .eyebrow {
+  letter-spacing: 0.13em;
+}
+.hero {
+  min-height: 720px;
+}
+.story-scroll {
+  background: #111a31;
+  height: 560vh;
+}
+.story-heading {
+  align-items: center;
+}
+.story-heading .text-button {
+  font-size: 10px;
+  color: var(--muted);
+}
+.scene-art {
+  background-image: url('/hantu-codex/art/neighbors.webp');
+  aspect-ratio: 1;
+}
+.scene-frame {
+  max-height: 480px;
+  aspect-ratio: 1;
+  align-self: center;
+  max-width: 440px;
+  width: 100%;
+  min-height: 0;
+  border-radius: 45% 45% 2px 2px;
+}
+.chapter-number {
+  color: #6f7996;
+}
+.chapter-track i {
+  background: #333c57;
+}
+.begin-story {
+  background: radial-gradient(ellipse at 10% 30%, #3a466066, transparent 70%);
+}
+.keeper-paper {
+  height: 420px;
+  border: 1px solid #ffd36e55;
+  border-radius: 48% 48% 0 0;
+  background: radial-gradient(ellipse at 50% 45%, #6f582e88, transparent 65%);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.keeper-paper > span {
+  color: var(--gold);
+  font-size: 35px;
+  position: absolute;
+  top: 30px;
+}
+.keeper-paper > p {
+  text-align: center;
+  color: var(--gold);
+  font: 24px var(--serif);
+  position: absolute;
+  bottom: 24px;
+  letter-spacing: 0.15em;
+}
+.keeper-paper small {
+  font: 7px var(--mono);
+  letter-spacing: 0.1em;
+}
+.paper-keeper {
+  position: relative;
+  width: 100px;
+  height: 160px;
+  background: #101329;
+  clip-path: polygon(
+    35% 0%,
+    65% 0%,
+    70% 18%,
+    58% 30%,
+    90% 48%,
+    100% 57%,
+    90% 65%,
+    65% 50%,
+    70% 100%,
+    40% 100%,
+    45% 65%,
+    28% 100%,
+    10% 100%,
+    33% 45%,
+    10% 60%,
+    0% 50%,
+    30% 28%
+  );
+  filter: drop-shadow(0 0 20px #ffd36e);
+  transform: scale(1.25);
+}
+.keeper-paper:after {
+  content: '✧';
+  color: #ffd36e;
+  font-size: 70px;
+  position: absolute;
+  top: 180px;
+  right: 23%;
+  text-shadow: 0 0 30px #ff9a3c;
+}
+.spirit-art {
+  background-image: url('/hantu-codex/art/spirits.webp');
+  background-size: 300% 200%;
+}
+.locked-art {
+  filter: brightness(0.23) saturate(0.35);
+}
+.spirit-card {
+  background: #121b32;
+}
+.spirit-image {
+  height: 350px;
+}
+.spirit-status {
+  background: #0b1026bb;
+}
+.spirit-image:after {
+  background: linear-gradient(0deg, #0b102655, transparent 50%);
+}
+.card-copy > .eyebrow {
+  color: #9caec1;
+}
+.detail-art > .spirit-art {
+  background-size: 300% 200%;
+}
+.record-dialog,
+.start-dialog,
+.neighbor-dialog {
+  background: #141d34;
+}
+.close-dialog {
+  background: #101a31;
+  border-color: #68738c;
+}
+.variant-note {
+  background: #0b1428;
+}
+.record-label {
+  display: block;
+}
+.note-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--line);
+  margin: 20px 0;
+}
+.note-tabs button {
+  flex: 1;
+  border: 0;
+  padding: 13px;
+  font-size: 12px;
+}
+.note-tabs button[aria-selected='true'] {
+  border-bottom: 2px solid var(--gold);
+  color: var(--gold);
+}
+.record-disclaimer {
+  font: 9px/1.8 var(--mono) !important;
+  margin-top: 28px !important;
+}
+.field-note {
+  border-bottom: 1px solid var(--line);
+  padding: 18px 0;
+}
+.field-note h3 {
+  font-size: 24px;
+}
+.sound-toggle {
+  border: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 22px;
+  padding: 0;
+  min-height: 44px;
+}
+.sound-toggle span {
+  font: 8px var(--mono);
+}
+.motion-toggle {
+  min-height: 44px;
+  min-width: 44px;
+}
+.header-tools {
+  gap: 12px;
+}
+.brand {
+  min-height: 44px;
+}
+.region-filter button {
+  min-height: 44px;
+}
+.chapter-controls button {
+  width: 44px;
+  height: 44px;
+}
+.chapter-track button {
+  min-height: 44px;
+}
+.chapter-track i {
+  margin-top: 12px;
+}
+.map-pin {
+  min-width: 44px;
+  min-height: 44px;
+}
+.variant-tabs button {
+  min-height: 44px;
+}
+.close-dialog {
+  width: 44px;
+  height: 44px;
+}
+.collection-count {
+  min-height: 44px;
+}
+.text-button {
+  min-height: 44px;
+}
+.spirit-image .spirit-art {
+  transition: filter 0.4s;
+}
+.field-map {
+  background: #111e35;
+}
+.journal-desk {
+  background: #111b31;
+}
+.journal-desk input,
+.journal-desk textarea,
+select {
+  background: #0c162b;
+}
+footer {
+  background: #080e20;
+}
+.game-stage {
+  height: 600px;
+  background: #0b1026;
+}
+.phaser-host {
+  position: absolute;
+  inset: 0;
+}
+.phaser-host canvas {
+  display: block !important;
+  max-width: 100%;
+}
+.game-overlay {
+  background: #0b1026e8;
+}
+.hunter-game {
+  background: #111a31;
+}
+.game-hud span {
+  background: #0b1026ee;
+  border-color: #9baac044;
+}
+.game-toolbar {
+  background: #111b31;
+}
+.game-hint {
+  position: absolute;
+  bottom: 13px;
+  left: 5%;
+  right: 5%;
+  font-size: 12px;
+  text-align: center;
+  background: #0b1026e8;
+  padding: 8px 14px;
+  color: var(--paper);
+  margin: 0;
+  pointer-events: none;
+}
+.dpad {
+  grid-template-columns: repeat(3, 44px);
+}
+.dpad button {
+  height: 44px;
+  background: #24304a;
+}
+.action-controls button {
+  min-height: 44px;
+}
+.pattern-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+.pattern-buttons button {
+  min-height: 50px;
+  font-size: 12px;
+}
+.pattern-buttons button:nth-child(1) {
+  color: var(--jade);
+}
+.pattern-buttons button:nth-child(2) {
+  color: var(--gold);
+}
+.pattern-buttons button:nth-child(3) {
+  color: var(--ember);
+}
+.pattern-buttons button:nth-child(4) {
+  color: #b5bfea;
+}
+.pattern-buttons kbd {
+  font: 10px var(--mono);
+  opacity: 0.5;
+  margin-right: 6px;
+}
+.game-access-note {
+  font: 8px var(--mono);
+  color: var(--muted);
+  padding: 0 24px 18px;
+}
+.village-page {
+  padding-top: 45px;
+}
+.village-map {
+  position: relative;
+  aspect-ratio: 1.9;
+  min-height: 430px;
+  border: 1px solid var(--line);
+  overflow: hidden;
+  background: #11172b;
+}
+.village-background {
+  position: absolute;
+  inset: 0;
+  background: url('/hantu-codex/art/village.webp') center/cover;
+  filter: brightness(var(--village-light));
+  transition: filter 1.2s;
+}
+.village-map:after {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, #0b1026b0, transparent 25%);
+}
+.village-pin {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  min-width: 65px;
+  min-height: 75px;
+  padding: 0;
+}
+.lantern-shape {
+  width: 42px;
+  height: 50px;
+  border: 1px solid #e9c77c;
+  background: #11182b;
+  display: grid;
+  place-items: center;
+  color: #9aa7bd;
+  font: 12px var(--mono);
+  border-radius: 40% 40% 35% 35%;
+  position: relative;
+  transition:
+    background 1s,
+    box-shadow 1s;
+}
+.lantern-shape:before,
+.lantern-shape:after {
+  content: '';
+  height: 5px;
+  width: 23px;
+  position: absolute;
+  left: 8px;
+  background: #c89d60;
+  top: -5px;
+}
+.lantern-shape:after {
+  top: auto;
+  bottom: -5px;
+}
+.village-pin.lit .lantern-shape {
+  background: var(--gold);
+  color: #5d331c;
+  box-shadow:
+    0 0 25px #ffd36eaa,
+    0 0 70px #ff9a3c66;
+}
+.village-pin b {
+  font: 11px var(--body);
+  color: var(--paper);
+  background: #0b1026df;
+  padding: 3px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.village-caption {
+  position: absolute;
+  bottom: 15px;
+  left: 20px;
+  font: 8px var(--mono);
+  color: #c0c7d4;
+  z-index: 1;
+}
+.village-progress {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 24px;
+  border: 1px solid var(--line);
+}
+.village-progress button {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  text-align: left;
+  border: 0;
+  padding: 22px 18px;
+  gap: 3px 8px;
+  background: #111b30;
+}
+.village-progress button:nth-child(even) {
+  background: #141e34;
+}
+.village-progress button > span {
+  grid-row: 1/3;
+  color: #6c7790;
+}
+.village-progress button.done > span {
+  color: var(--gold);
+}
+.village-progress b {
+  font: 22px var(--serif);
+}
+.village-progress small {
+  font-size: 9px;
+  color: #9aa8bf;
+  line-height: 1.6;
+}
+.village-progress button.done small {
+  color: #cfc7a9;
+}
+.village-how {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 45px;
+  padding: 45px 0 0;
+}
+.village-how span {
+  font: 11px var(--mono);
+  color: var(--gold);
+}
+.village-how h3 {
+  margin: 12px 0;
+  font-size: 29px;
+}
+.village-how p {
+  font-size: 12px;
+}
+.gathering-invitation {
+  text-align: center;
+  padding: 55px 0;
+}
+.gathering-invitation > span {
+  font-size: 45px;
+  color: var(--gold);
+}
+.gathering-invitation h2,
+.gathering-invitation h1 {
+  margin: 18px 0;
+}
+.gathering-invitation p {
+  max-width: 550px;
+  margin: 20px auto;
+}
+.neighbor-dialog {
+  max-width: 800px;
+}
+.neighbor-dialog[open] {
+  display: grid;
+  grid-template-columns: 38% 62%;
+  gap: 0;
+}
+.neighbor-dialog > .scene-art {
+  height: 100%;
+  min-height: 460px;
+}
+.neighbor-dialog > div:not(.scene-art) {
+  padding: 45px 35px;
+}
+.neighbor-dialog h2 {
+  font-size: 54px;
+  margin: 16px 0;
+}
+.neighbor-dialog p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #dad8ce;
+  min-height: 125px;
+}
+.neighbor-dialog .eyebrow {
+  font-size: 8px;
+  margin-bottom: 20px;
+}
+.neighbor-dialog button {
+  margin-top: 12px;
+}
+.neighbor-dialog .close-dialog {
+  margin: 0;
+}
+.win-card {
+  display: grid;
+  grid-template-columns: 35% 1fr;
+  gap: 50px;
+  border: 1px solid #ffd36e66;
+  background: #151e33;
+  transform-style: preserve-3d;
+  overflow: hidden;
+}
+.win-art {
+  min-height: 500px;
+}
+.win-card > div:last-child {
+  padding: 45px 45px 45px 0;
+}
+.win-card h2 {
+  font-size: 40px;
+  line-height: 1.15;
+  margin: 22px 0;
+}
+.win-card p {
+  font-size: 14px;
+  line-height: 1.9;
+}
+.win-lantern {
+  padding: 22px 0;
+  color: var(--gold);
+  font-size: 32px;
+}
+.win-lantern span {
+  font-size: 12px;
+  vertical-align: middle;
+  margin-left: 12px;
+}
+.finale-page {
+  position: relative;
+  padding-top: 0;
+}
+.finale-art {
+  height: 440px;
+  background: url('/hantu-codex/art/village.webp') center/cover;
+  margin: 0 -8%;
+}
+.finale-copy {
+  text-align: center;
+  max-width: 690px;
+  position: relative;
+  margin: -70px auto 50px;
+  background: linear-gradient(0deg, #0b1026 85%, #0b1026e6);
+  padding: 50px 25px 0;
+  border-top: 1px solid #ffd36e55;
+}
+.finale-copy h1 {
+  margin: 20px 0;
+}
+.finale-copy p {
+  font-size: 14px;
+  line-height: 1.9;
+}
+.finale-copy .finale-joke {
+  font: italic 25px/1.4 var(--serif);
+  color: var(--gold);
+  margin-top: 28px;
+}
+.finale-neighbors {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px 20px;
+}
+.finale-neighbors .scene-art {
+  height: auto;
+  aspect-ratio: 1;
+}
+.finale-neighbors b {
+  display: block;
+  font: 26px var(--serif);
+  margin: 12px 0 5px;
+}
+.finale-neighbors p {
+  font-size: 10px;
+  color: var(--gold);
+}
+.finale-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin: 45px 0;
+}
+.credits {
+  border-top: 1px solid var(--line);
+  padding: 40px 0 0;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+.credits h2 {
+  font-size: 36px;
+  margin: 15px 0 20px;
+}
+.credits p {
+  font-size: 11px;
+  line-height: 1.9;
+}
+.debug-panel {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 55;
+  background: #101a30f5;
+  border: 1px dashed var(--gold);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100% - 20px);
+  flex-wrap: wrap;
+}
+.debug-panel b {
+  font: 8px var(--mono);
+  color: var(--gold);
+}
+.debug-panel select,
+.debug-panel button {
+  font-size: 10px;
+  padding: 8px;
+  min-height: 44px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.snack-secret {
+  position: absolute;
+  right: 7%;
+  bottom: 9%;
+  z-index: 3;
+  border: 0;
+  min-width: 44px;
+  min-height: 44px;
+  color: var(--gold);
+  font-size: 28px;
+  background: #0b1026a0;
+  border-radius: 50%;
+}
+.egg-dialog {
+  max-width: 490px;
+  padding: 42px;
+  text-align: center;
+}
+.egg-dialog h2 {
+  font-size: 45px;
+  margin: 16px 0;
+}
+.egg-dialog p {
+  font-size: 14px;
+}
+.egg-dialog .egg-plate {
+  font-size: 45px;
+  color: var(--jade);
+  margin: 20px 0;
+}
+.egg-dialog a {
+  font-size: 10px;
+  color: var(--gold);
+}
+@media (max-width: 1100px) {
+  header {
+    gap: 13px;
+  }
+  nav {
+    gap: 15px;
+  }
+  .header-tools {
+    gap: 8px;
+  }
+  .sound-toggle span,
+  .motion-toggle span {
+    display: none;
+  }
+  .hero-copy h1 {
+    font-size: 88px;
+  }
+  .village-map {
+    min-height: 400px;
+  }
+  .village-progress button {
+    padding: 18px 13px;
+  }
+  .win-card {
+    gap: 30px;
+  }
+  .win-card > div:last-child {
+    padding: 35px 30px 35px 0;
+  }
+}
+@media (max-width: 760px) {
+  header {
+    height: 112px;
+    gap: 0;
+  }
+  .header-tools {
+    gap: 7px;
+  }
+  .motion-toggle span,
+  .sound-toggle span {
+    display: none;
+  }
+  .collection-count {
+    padding-left: 10px;
+  }
+  .hero {
+    min-height: 680px;
+  }
+  .hero-art {
+    background-position: 61% center;
+  }
+  .hero-copy {
+    padding: 60px 7% 100px;
+  }
+  .hero-copy h1 {
+    font-size: 71px;
+    line-height: 0.98;
+  }
+  .hero-shade {
+    background:
+      linear-gradient(90deg, #0b1026ed, #0b10268a 65%, #0b102655),
+      linear-gradient(0deg, #0b1026, transparent 50%);
+  }
+  .hero-caption {
+    bottom: 55px;
+  }
+  .story-scroll {
+    height: 600vh;
+  }
+  .story-sticky {
+    min-height: 710px;
+  }
+  .scene-frame {
+    width: 235px;
+    min-height: 235px;
+    max-height: 235px;
+    aspect-ratio: 1;
+  }
+  .scene-art {
+    background-size: 400% 200%;
+  }
+  .story-words h2 {
+    font-size: 35px;
+  }
+  .story-stage {
+    gap: 16px;
+  }
+  .story-heading .text-button {
+    font-size: 8px;
+    padding: 0;
+    min-height: 30px;
+  }
+  .story-heading > .eyebrow {
+    font-size: 6px;
+    max-width: 160px;
+  }
+  .chapter-track {
+    margin-top: 5px;
+  }
+  .chapter-controls {
+    gap: 4px;
+  }
+  .chapter-controls button {
+    width: 44px;
+    height: 44px;
+  }
+  .keepsake {
+    max-width: calc(100% - 95px);
+  }
+  .manual-story {
+    height: auto;
+  }
+  .manual-story .story-sticky {
+    height: 800px;
+  }
+  .keeper-paper {
+    height: 350px;
+    width: 270px;
+    margin: auto;
+  }
+  .spirit-image {
+    height: 240px;
+  }
+  .detail-art > .spirit-art {
+    background-size: 300% 200%;
+    background-position-y: inherit !important;
+  }
+  .detail-art {
+    height: 250px;
+  }
+  .detail-art > .spirit-art {
+    width: 180px;
+    left: calc(50% - 90px);
+  }
+  .detail-copy {
+    padding: 25px;
+  }
+  .village-page {
+    padding-top: 32px;
+  }
+  .village-map {
+    min-height: 420px;
+    aspect-ratio: 0.9;
+  }
+  .village-background {
+    background-size: auto 100%;
+    background-position: 61% center;
+  }
+  .village-pin {
+    min-width: 58px;
+    min-height: 65px;
+  }
+  .lantern-shape {
+    width: 33px;
+    height: 40px;
+    font-size: 10px;
+  }
+  .lantern-shape:before,
+  .lantern-shape:after {
+    width: 19px;
+    left: 6px;
+  }
+  .village-pin b {
+    font-size: 9px;
+    padding: 3px 5px;
+  }
+  .village-caption {
+    font-size: 6px;
+    left: 12px;
+  }
+  .village-progress {
+    grid-template-columns: 1fr 1fr;
+  }
+  .village-progress button {
+    padding: 17px 12px;
+    gap: 4px;
+  }
+  .village-progress b {
+    font-size: 22px;
+  }
+  .village-progress small {
+    font-size: 8px;
+  }
+  .village-how {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding-top: 35px;
+  }
+  .village-how > div {
+    display: grid;
+    grid-template-columns: 35px 1fr;
+    gap: 0 10px;
+  }
+  .village-how span {
+    grid-row: 1/3;
+    padding-top: 12px;
+  }
+  .village-how h3 {
+    font-size: 27px;
+    margin: 6px 0;
+  }
+  .village-how p {
+    font-size: 11px;
+  }
+  .neighbor-dialog[open] {
+    display: block;
+  }
+  .neighbor-dialog > .scene-art {
+    height: 190px;
+    min-height: 0;
+    width: 190px;
+    margin: auto;
+  }
+  .neighbor-dialog > div:not(.scene-art) {
+    padding: 25px;
+  }
+  .neighbor-dialog h2 {
+    font-size: 42px;
+  }
+  .neighbor-dialog p {
+    font-size: 13px;
+    min-height: 90px;
+  }
+  .neighbor-dialog .eyebrow {
+    font-size: 7px;
+  }
+  .neighbor-dialog .close-dialog {
+    top: 9px;
+    right: 9px;
+  }
+  .game-stage {
+    height: 400px;
+  }
+  .game-overlay {
+    padding: 25px 18px;
+  }
+  .game-overlay h2 {
+    font-size: 37px;
+    margin: 12px 0;
+  }
+  .game-overlay p {
+    font-size: 11px;
+    margin-bottom: 15px;
+  }
+  .game-overlay .game-help {
+    margin: 15px 0;
+    font-size: 9px;
+  }
+  .game-overlay .gold-button {
+    padding: 12px 18px;
+    min-height: 44px;
+  }
+  .game-hint {
+    font-size: 9px;
+    bottom: 8px;
+    padding: 6px 10px;
+    left: 3%;
+    right: 3%;
+  }
+  .game-hud {
+    top: 8px;
+    left: 6px;
+    right: 6px;
+  }
+  .game-hud span {
+    font-size: 7px;
+    padding: 7px 5px;
+  }
+  .game-controls {
+    padding: 15px;
+    gap: 15px;
+  }
+  .pattern-buttons {
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+  }
+  .pattern-buttons button {
+    font-size: 11px;
+  }
+  .game-access-note {
+    font-size: 7px;
+    line-height: 1.8;
+    padding: 0 15px 15px;
+  }
+  .win-card {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .win-art {
+    height: 270px;
+    min-height: 0;
+    width: 180px;
+    justify-self: center;
+  }
+  .win-card > div:last-child {
+    padding: 25px;
+  }
+  .win-card h2 {
+    font-size: 31px;
+  }
+  .win-card p {
+    font-size: 12px;
+  }
+  .win-card .eyebrow {
+    font-size: 7px;
+  }
+  .win-lantern span {
+    font-size: 10px;
+  }
+  .finale-art {
+    height: 300px;
+  }
+  .finale-copy {
+    margin-top: -35px;
+    padding-top: 35px;
+  }
+  .finale-copy .eyebrow {
+    font-size: 7px;
+  }
+  .finale-copy h1 {
+    font-size: 53px;
+  }
+  .finale-copy p {
+    font-size: 12px;
+  }
+  .finale-neighbors {
+    grid-template-columns: 1fr 1fr;
+    gap: 22px 15px;
+  }
+  .finale-neighbors b {
+    font-size: 24px;
+  }
+  .finale-neighbors p {
+    font-size: 9px;
+  }
+  .finale-actions {
+    margin: 30px 0;
+    gap: 12px;
+  }
+  .credits h2 {
+    font-size: 31px;
+  }
+  .credits p {
+    font-size: 10px;
+  }
+  .debug-panel {
+    padding: 8px;
+    gap: 6px;
+  }
+  .debug-panel b {
+    font-size: 7px;
+  }
+  .debug-panel select,
+  .debug-panel button {
+    font-size: 8px;
+    padding: 7px;
+  }
+  .gathering-invitation h1 {
+    font-size: 46px;
+  }
+  .gathering-invitation p {
+    font-size: 12px;
+  }
+  .egg-dialog {
+    padding: 30px;
+  }
+  .snack-secret {
+    right: 4%;
+    bottom: 8%;
+    font-size: 23px;
+  }
+}
+
+.egg-plate {
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+}
+.egg-plate span {
+  animation: bob 1.8s ease-in-out infinite;
+}
+.egg-plate span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.egg-plate span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+.egg-dialog .gold-button {
+  margin-top: 22px;
+  font-size: 12px;
+  min-height: 44px;
+}
+.character-view {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 60%, #d7a6541a, transparent 65%);
+}
+.character-view canvas {
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+}
+.character-view.interactive {
+  touch-action: pan-y;
+  cursor: grab;
+}
+.character-loading {
+  position: absolute;
+  font: 11px/1.8 var(--mono);
+  max-width: 240px;
+  text-align: center;
+  color: var(--muted);
+  padding: 20px;
+}
+.keeper-paper > .character-view {
+  height: 330px;
+  margin-bottom: 35px;
+  z-index: 1;
+}
+.keeper-paper:after {
+  display: none;
+}
+.neighbor-dialog > .character-view {
+  padding: 0 !important;
+  height: 460px;
+  min-height: 0;
+}
+.detail-art > .character-view {
+  position: absolute;
+  inset: 0;
+}
+.win-art > .character-view {
+  height: 100%;
+  min-height: 480px;
+}
+.workshop {
+  display: grid;
+  grid-template-columns: 180px minmax(300px, 1fr) 280px;
+  gap: 30px;
+  border: 1px solid var(--line);
+  background: #10192e;
+  padding: 26px;
+}
+.character-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-height: 640px;
+  overflow-y: auto;
+}
+.character-list button {
+  text-align: left;
+  min-height: 44px;
+  font-size: 12px;
+  padding: 9px 12px;
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.character-list button span {
+  font: 6px var(--mono);
+  color: var(--muted);
+  letter-spacing: 0.13em;
+}
+.character-list .active {
+  background: #ffd36e18;
+  color: var(--gold);
+  border-left: 2px solid var(--gold);
+}
+.model-stage {
+  position: relative;
+  height: 590px;
+  align-self: center;
+  overflow: hidden;
+  background: radial-gradient(ellipse at center, #49524e44, transparent 70%);
+}
+.model-stage > .character-view {
+  z-index: 1;
+  height: 100%;
+}
+.model-ground {
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  height: 50px;
+  border: 1px solid #ffd36e55;
+  background: #1d2841;
+  border-radius: 50%;
+  bottom: 55px;
+  box-shadow: 0 0 70px #d8b2681a;
+}
+.model-stage-note {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  font: 7px var(--mono);
+  text-align: center;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+.model-details {
+  align-self: center;
+}
+.model-details h2 {
+  font-size: 50px;
+  margin: 16px 0 20px;
+}
+.model-details p {
+  font-size: 12px;
+  line-height: 1.9;
+}
+.clip-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 24px 0 8px;
+}
+.clip-controls button {
+  min-height: 44px;
+  font-size: 11px;
+}
+.clip-controls .active {
+  background: #ffd36e22;
+  color: var(--gold);
+  border-color: #ffd36e88;
+}
+.model-downloads {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+  margin-top: 15px;
+}
+.model-downloads a {
+  font-size: 13px;
+  color: var(--gold);
+  text-decoration: none;
+}
+.model-downloads small {
+  display: block;
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+.model-details .model-file-note {
+  font: 9px/1.8 var(--mono);
+  margin-top: 22px;
+}
+.workshop .eyebrow {
+  font-size: 8px;
+}
+@media (min-width: 761px) and (max-width: 1150px) {
+  nav {
+    gap: 12px;
+  }
+  .brand {
+    font-size: 12px;
+  }
+  .workshop {
+    grid-template-columns: 140px 1fr 230px;
+    gap: 18px;
+    padding: 20px;
+  }
+  .model-stage {
+    height: 520px;
+  }
+}
+@media (max-width: 760px) {
+  nav button {
+    font-size: 9px;
+  }
+  .neighbor-dialog > .character-view {
+    height: 200px !important;
+    width: 100%;
+    min-height: 0 !important;
+  }
+  .neighbor-dialog > div:not(.scene-art):not(.character-view) {
+    padding: 25px;
+  }
+  .win-art {
+    width: 100%;
+    height: 260px;
+  }
+  .win-art > .character-view {
+    min-height: 0;
+    height: 260px;
+  }
+  .detail-art > .character-view {
+    height: 250px;
+  }
+  .workshop {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 18px;
+  }
+  .character-list {
+    flex-direction: row;
+    max-height: none;
+    overflow-x: auto;
+    padding-bottom: 9px;
+    gap: 5px;
+  }
+  .character-list button {
+    min-width: 90px;
+    min-height: 54px;
+    font-size: 10px;
+    padding: 9px;
+  }
+  .character-list button span {
+    font-size: 5px;
+  }
+  .model-stage {
+    height: 380px;
+    grid-row: 2;
+  }
+  .model-ground {
+    bottom: 45px;
+  }
+  .model-details h2 {
+    font-size: 43px;
+    margin: 12px 0;
+  }
+  .model-details > p {
+    font-size: 12px;
+  }
+  .model-details .eyebrow {
+    font-size: 8px;
+  }
+  .model-details {
+    padding-top: 10px;
+  }
+  .clip-controls {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+  .clip-controls button {
+    font-size: 9px;
+  }
+  .model-stage-note {
+    font-size: 6px;
+  }
+  .model-downloads {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+  .model-downloads a {
+    font-size: 11px;
+  }
+  .model-downloads small {
+    font-size: 8px;
+  }
+  .keeper-paper > .character-view {
+    height: 280px;
+  }
+}
+
+@media (max-width: 760px) {
+  .finale-art {
+    margin-left: -6vw;
+    margin-right: -6vw;
+  }
+}
+
+/* Storybook type: three voices, with handwriting reserved for Ari's own notes. */
+h1,
+h2,
+h3,
+.dialogue-line {
+  font-optical-sizing: auto;
+  font-variation-settings:
+    'SOFT' 45,
+    'WONK' 1;
+}
+.dialogue-line {
+  font-family: var(--serif);
+  font-size: 19px !important;
+  line-height: 1.65 !important;
+}
+.ari-note {
+  font: 400 26px/1.65 var(--hand);
+  background: repeating-linear-gradient(
+    transparent 0,
+    transparent 41px,
+    #ffd36e22 42px,
+    #ffd36e22 43px
+  );
+  padding: 15px 18px;
+  color: var(--paper);
+}
+button,
+a.gold-button,
+.text-button,
+.model-downloads a,
+.source-link,
+.neighbor a,
+.journal-desk a {
+  min-height: 44px;
+  min-width: 44px;
+}
+.model-downloads a,
+.source-link,
+.neighbor a,
+.journal-desk a {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.game-hud {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  pointer-events: none;
+  gap: 8px;
+}
+.game-hud span {
+  font-family: var(--body);
+  font-size: 14px;
+  max-width: max-content;
+}
+.game-hud span:nth-child(2) {
+  justify-self: end;
+}
+.game-hud span:nth-child(3) {
+  grid-column: 2;
+  justify-self: end;
+}
+@media (max-width: 760px) {
+  body {
+    font-size: 14px;
+  }
+  .hero-copy h1 {
+    font-size: clamp(52px, 14vw, 71px);
+    line-height: 1.04;
+  }
+  .section-heading h1 {
+    font-size: clamp(36px, 10.7vw, 48px);
+  }
+  .hero-copy p,
+  .section-heading p,
+  .story-words p,
+  .begin-story p,
+  .neighbor p,
+  .detail-copy p,
+  .variant-note p,
+  .journal-desk p,
+  .model-details p,
+  .win-card p,
+  .finale-copy p,
+  .credits p,
+  .game-overlay p,
+  .game-overlay .game-help,
+  .village-how p,
+  .route-card p,
+  .card-copy p,
+  .source-note {
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .fiction-note,
+  .record-disclaimer,
+  .game-access-note,
+  .source-link {
+    font: 12px/1.7 var(--body) !important;
+  }
+  nav {
+    gap: 20px;
+    overflow-x: auto;
+    width: 100%;
+    scrollbar-width: none;
+  }
+  nav button {
+    font-size: 14px;
+    min-width: 44px;
+    flex-shrink: 0;
+  }
+  .brand {
+    font-size: 12px;
+  }
+  .brand small {
+    font-size: 8px;
+  }
+  .text-button,
+  .gold-button,
+  .region-filter button,
+  .search input,
+  .collected-toggle,
+  .note-tabs button,
+  .variant-tabs button,
+  .clip-controls button,
+  .character-list button,
+  .pattern-buttons button {
+    font-size: 14px;
+  }
+  .story-heading .text-button {
+    font-size: 12px;
+    min-height: 44px;
+  }
+  .story-heading > .eyebrow {
+    font-size: 10px;
+    max-width: 160px;
+  }
+  .story-sticky {
+    min-height: 850px;
+  }
+  .story-words h2 {
+    font-size: 34px;
+  }
+  .scene-frame {
+    width: 210px;
+    min-height: 210px;
+    max-height: 210px;
+  }
+  .spirit-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .spirit-image {
+    height: 190px;
+  }
+  .card-copy {
+    padding: 14px 10px;
+  }
+  .card-copy h2 {
+    font-size: 23px;
+    overflow-wrap: anywhere;
+  }
+  .card-copy .eyebrow {
+    font-size: 10px;
+  }
+  .card-arrow {
+    display: none;
+  }
+  .card-index {
+    font-size: 9px;
+    left: 10px;
+    top: 12px;
+  }
+  .spirit-status {
+    font: 10px/1.4 var(--body);
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    padding: 6px;
+  }
+  .card-copy p {
+    font-size: 14px;
+  }
+  .search {
+    width: 100%;
+  }
+  .search input {
+    width: 100%;
+  }
+  .neighbor-dialog[open] {
+    position: fixed;
+    inset: auto 0 0;
+    margin: 0;
+    width: 100%;
+    max-width: none;
+    max-height: calc(100dvh - 28px);
+    border-radius: 28px 28px 0 0;
+    border: 1px solid #ffd36e44;
+    overflow-y: auto;
+    padding: 10px 0 max(12px, env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+  }
+  .neighbor-dialog:before {
+    content: '';
+    display: block;
+    flex-shrink: 0;
+    width: 44px;
+    height: 4px;
+    border-radius: 9px;
+    background: #adb4ca66;
+    margin: 0 auto 5px;
+  }
+  .neighbor-dialog > .character-view {
+    height: 175px !important;
+    flex-shrink: 0;
+  }
+  .neighbor-dialog > div:not(.character-view) {
+    padding: 18px 24px 0 !important;
+  }
+  .neighbor-dialog h2 {
+    font-size: 38px;
+    margin: 10px 0;
+  }
+  .neighbor-dialog .eyebrow {
+    font-size: 11px;
+    margin-bottom: 12px;
+  }
+  .neighbor-dialog .dialogue-line {
+    font-size: 18px !important;
+    min-height: 90px;
+    margin-bottom: 14px;
+  }
+  .neighbor-dialog .gold-button {
+    width: 100%;
+    margin-top: 0;
+  }
+  .neighbor-dialog .text-button {
+    width: 100%;
+    margin: 0;
+  }
+  .neighbor-dialog .close-dialog {
+    z-index: 3;
+  }
+  .game-stage {
+    height: 490px;
+  }
+  .game-overlay {
+    padding: 25px 20px;
+    justify-content: center;
+  }
+  .game-overlay h2 {
+    font-size: 32px;
+  }
+  .game-overlay .eyebrow {
+    font-size: 10px;
+  }
+  .game-help {
+    margin: 12px 0 !important;
+  }
+  .game-overlay .gold-button {
+    margin-top: 8px;
+  }
+  .game-hud {
+    left: 10px;
+    right: 10px;
+    top: 10px;
+  }
+  .game-hud span {
+    font-size: 13px;
+    padding: 6px 8px;
+  }
+  .game-hint {
+    font: 14px/1.4 var(--body);
+    bottom: 12px;
+  }
+  .game-toolbar {
+    font-size: 12px;
+  }
+  .game-toolbar b {
+    font-size: 13px;
+  }
+  .game-controls {
+    position: sticky;
+    bottom: 0;
+    z-index: 4;
+    background: #111b31;
+    padding-bottom: max(15px, env(safe-area-inset-bottom));
+  }
+  .game-controls > p {
+    display: none;
+  }
+  .game-controls .action-controls button {
+    font-size: 14px;
+  }
+  .model-details h2 {
+    font-size: 38px;
+  }
+  .model-details .eyebrow {
+    font-size: 12px;
+  }
+  .model-details .model-file-note {
+    font: 12px/1.7 var(--body);
+  }
+  .model-downloads a {
+    font-size: 14px;
+  }
+  .model-downloads small {
+    font-size: 12px;
+  }
+  .character-list button {
+    min-width: 105px;
+  }
+  .character-list button span {
+    font-size: 9px;
+  }
+  .model-stage-note {
+    font-size: 10px;
+  }
+  .clip-controls {
+    gap: 5px;
+  }
+  .workshop {
+    padding: 14px;
+  }
+  .ari-note {
+    font-size: 26px;
+  }
+}
+@media (max-width: 360px) {
+  .card-copy h2 {
+    font-size: 21px;
+  }
+  .game-overlay h2 {
+    font-size: 28px;
+  }
+  .game-stage {
+    height: 530px;
+  }
+}
+.journal-desk textarea.ari-note {
+  font: 400 26px/1.65 var(--hand);
+  color: var(--paper);
+}
+.neighbor p {
+  font-size: 14px;
+  line-height: 1.7;
+}
+@media(max-width:760px){
+ .story-sticky{min-height:0;height:calc(100svh - 112px);overflow-y:auto;padding:16px 6% 8px}
+ .story-stage{gap:12px;justify-content:center;flex:1}
+ .scene-frame{width:180px;min-height:140px;height:clamp(140px,23svh,200px);max-height:200px;flex:0 0 auto}
+ .story-words .eyebrow{font-size:10px}.keepsake span{font-size:9px}.chapter-track{margin-top:6px;flex-shrink:0}.chapter-track button{min-width:0;min-height:44px}
+ .manual-story .story-sticky{height:auto;min-height:730px;overflow:visible}
+}
+/* Atlas cells retain their authored aspect ratio at every card and dialogue size. */
+.scene-art,.spirit-art{background-image:none}
+.scene-art>svg,.spirit-art>svg{display:block;width:100%;height:100%;overflow:hidden}
+
+@media(min-width:761px){.hero-art{background-image:url('/hantu-codex/art/village-wide.webp')}}

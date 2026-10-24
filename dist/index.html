@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#193e32"><meta name="description" content="A little light. A great adventure. Create your wayfinder and restore a forgotten valley in this cozy storybook RPG."><title>The Lantern Keeper — A storybook adventure</title><link rel="icon" href="assets/lantern-logo.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css"></head>
+<body>
+<header><a class="brand" href="#" aria-label="The Lantern Keeper home"><span class="brand-mark"><img src="assets/lantern-logo.svg" width="40" height="50" alt="" style="display:block"></span><span>THE LANTERN<br>KEEPER</span></a><nav aria-label="Main navigation"><button id="worldNav" class="nav-link active">The valley</button><button id="journalNav" class="nav-link">Your journal <span class="nav-dot"></span></button><button id="sound" class="sound" aria-label="Mute fantasy music" aria-pressed="true">♫ <span>Sound ready</span></button></nav><span class="header-note">A STORY WAITING FOR YOU</span></header>
+<main>
+<section class="hero" aria-labelledby="heroTitle">
+<div class="hero-art" role="img" aria-label="A Malaysian–Singaporean-inspired wayfinder in a teal tunic and batik waist wrap, carrying a lantern above a tropical valley"></div><div class="hero-shade"></div>
+<div class="hero-copy"><p class="eyebrow"><span></span> A SOUTHEAST ASIAN STORYBOOK RPG</p><h1 id="heroTitle">A little light.<br>A great <em>adventure.</em></h1><p class="intro">Beyond the shophouses and rain trees, a forgotten valley is waiting to glow again.<br>And it all begins with you.</p><div class="hero-actions"><button class="primary" id="start">Begin your story <span>↗</span></button><button class="text-button" id="meet">Meet your keeper <span>→</span></button></div><div class="hero-meta"><span>✧ &nbsp; Made for the curious</span><i></i><span>Play at your own pace</span></div></div>
+<div class="art-caption"><span class="tiny-star">✦</span><div>EVERY JOURNEY NEEDS A LITTLE LIGHT<span>Lembah Cahaya · Chapter I</span></div></div>
+<div class="corner-stamp"><span>WANDER<br>WITH<br>WONDER</span><b>✧</b></div>
+</section>
+<section class="valley" id="valley"><div class="section-top"><div><p class="eyebrow">A WORLD WITH A HEARTBEAT</p><h2>Small steps. Wonderful discoveries.</h2></div><p>Three lost lanterns. A thousand little wonders.<br>Choose a path and see what finds you.</p></div><div class="locations">
+<button class="location grove" data-place="0"><span class="place-art"><span class="sun"></span><span class="tree t1"></span><span class="tree t2"></span><span class="tree t3"></span><span class="path"></span><span class="place-num">01</span><span class="place-badge">YOUR FIRST FOOTSTEPS</span></span><span class="place-info"><span><strong>The Whispering Grove</strong><small>Where the forest remembers your name.</small></span><b>↗</b></span></button>
+<button class="location river" data-place="1"><span class="place-art"><span class="sun"></span><span class="mountain m1"></span><span class="mountain m2"></span><span class="water"></span><span class="bridge"></span><span class="place-num">02</span><span class="place-badge">A RIVER OF MEMORIES</span></span><span class="place-info"><span><strong>The Moonlit Crossing</strong><small>Some bridges are built with kindness.</small></span><b>↗</b></span></button>
+<button class="location summit" data-place="2"><span class="place-art"><span class="sun"></span><span class="mountain m1"></span><span class="mountain m2"></span><span class="shrine">♜</span><span class="place-num">03</span><span class="place-badge">A LIGHT ABOVE THE CLOUDS</span></span><span class="place-info"><span><strong>The Starlight Summit</strong><small>The smallest light can reach the sky.</small></span><b>↗</b></span></button>
+</div></section>
+<footer><span>✧ &nbsp; An original hand-painted world. A story that’s yours.</span><span>NO RUSH. JUST WONDER.</span></footer>
+</main>
+<dialog id="modal" aria-labelledby="dialogTitle"><button class="close" aria-label="Close dialog">×</button><div id="modalContent"></div></dialog>
+<div id="toast" role="status"></div>
+<script src="game.js"></script>
+</body></html>

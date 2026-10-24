@@ -1,0 +1,16 @@
+:root {
+  --indigo-950: #0b1026;
+  --ember: #ff9a3c;
+  --gold: #ffd36e;
+  --jade: #3fb68b;
+  --paper: #f4e9d2;
+  --bg: var(--indigo-950);
+  --panel: #151e38;
+  --ink: var(--paper);
+  --muted: #adb4ca;
+  --line: rgba(244, 233, 210, 0.17);
+  --body: var(--font-nunito), Arial, sans-serif;
+  --serif: var(--font-fraunces), Georgia, serif;
+  --hand: var(--font-caveat), cursive;
+  --mono: var(--font-nunito), Arial, sans-serif;
+}

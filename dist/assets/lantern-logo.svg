@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 80" fill="none">
+ <defs>
+  <linearGradient id="brass" x1="12" y1="0" x2="52" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#a66b24"/><stop offset=".35" stop-color="#ffdf87"/><stop offset=".6" stop-color="#dfaa4e"/><stop offset="1" stop-color="#9b611e"/></linearGradient>
+  <radialGradient id="glow"><stop stop-color="#ffec9a" stop-opacity=".85"/><stop offset="1" stop-color="#e78c22" stop-opacity=".08"/></radialGradient>
+ </defs>
+ <path d="M24 14V11a8 8 0 0 1 16 0v3" stroke="url(#brass)" stroke-width="3"/>
+ <path d="M22 16h20l3 7 10 7H9l10-7 3-7Z" fill="#263b31" stroke="url(#brass)" stroke-width="2.5"/>
+ <path d="M18 23h28M12 32h40" stroke="#efc773" stroke-width="2"/>
+ <path d="M15 33h34v33H15z" fill="#24392b"/>
+ <ellipse cx="32" cy="51" rx="17" ry="19" fill="url(#glow)"/>
+ <path d="M15 34v32m34-32v32M23 34v32m18-32v32" stroke="url(#brass)" stroke-width="2.5"/>
+ <path d="M31 60c-8-1-9-7-4-12 3-3 4-6 3-10 7 5 6 9 7 12 3-1 3-3 3-3 4 8-1 14-9 13Z" fill="#ffd978"/>
+ <path d="M31 59c-4-2-3-5 1-10 0 4 5 5 2 9Z" fill="#fff7cf"/>
+ <path d="M13 66h38l3 5H10l3-5ZM10 74h44" fill="#31432d" stroke="url(#brass)" stroke-width="3" stroke-linejoin="round"/>
+ <path d="m19 43 1-2 1 2-1 2-1-2Zm25 12 1-2 1 2-1 2-1-2Z" fill="#fff2b3"/>
+</svg>

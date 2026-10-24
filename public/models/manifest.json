@@ -1,0 +1,392 @@
+[
+  {
+    "id": "ari",
+    "name": "Ari",
+    "glb": "/hantu-codex/models/ari.glb",
+    "dxf": "/hantu-codex/models/ari.dxf",
+    "clips": [
+      "Idle",
+      "Walk",
+      "Wave",
+      "Celebrate"
+    ],
+    "bounds": {
+      "min": [
+        -0.5792,
+        0.04,
+        -0.3362
+      ],
+      "max": [
+        0.6001,
+        2.55,
+        0.3362
+      ]
+    },
+    "height": 2.51,
+    "triangles": 6576
+  },
+  {
+    "id": "farah",
+    "name": "Farah",
+    "glb": "/hantu-codex/models/farah.glb",
+    "dxf": "/hantu-codex/models/farah.dxf",
+    "clips": [
+      "Idle",
+      "Walk",
+      "Wave",
+      "Celebrate"
+    ],
+    "bounds": {
+      "min": [
+        -0.6323,
+        0.04,
+        -0.35
+      ],
+      "max": [
+        0.5792,
+        2.42,
+        0.3366
+      ]
+    },
+    "height": 2.38,
+    "triangles": 6444
+  },
+  {
+    "id": "mei-lin",
+    "name": "Mei Lin",
+    "glb": "/hantu-codex/models/mei-lin.glb",
+    "dxf": "/hantu-codex/models/mei-lin.dxf",
+    "clips": [
+      "Idle",
+      "Walk",
+      "Wave",
+      "Celebrate"
+    ],
+    "bounds": {
+      "min": [
+        -0.5904,
+        0.04,
+        -0.2835
+      ],
+      "max": [
+        0.6001,
+        2.405,
+        0.285
+      ]
+    },
+    "height": 2.365,
+    "triangles": 6704
+  },
+  {
+    "id": "kavitha",
+    "name": "Kavitha",
+    "glb": "/hantu-codex/models/kavitha.glb",
+    "dxf": "/hantu-codex/models/kavitha.dxf",
+    "clips": [
+      "Idle",
+      "Walk",
+      "Wave",
+      "Celebrate"
+    ],
+    "bounds": {
+      "min": [
+        -0.5792,
+        0.04,
+        -0.38
+      ],
+      "max": [
+        0.5949,
+        2.41,
+        0.3366
+      ]
+    },
+    "height": 2.37,
+    "triangles": 6720
+  },
+  {
+    "id": "daniel",
+    "name": "Daniel",
+    "glb": "/hantu-codex/models/daniel.glb",
+    "dxf": "/hantu-codex/models/daniel.dxf",
+    "clips": [
+      "Idle",
+      "Walk",
+      "Wave",
+      "Celebrate"
+    ],
+    "bounds": {
+      "min": [
+        -0.5866,
+        0.04,
+        -0.2835
+      ],
+      "max": [
+        0.5792,
+        2.405,
+        0.2983
+      ]
+    },
+    "height": 2.365,
+    "triangles": 6684
+  },
+  {
+    "id": "suri",
+    "name": "Suri",
+    "glb": "/hantu-codex/models/suri.glb",
+    "dxf": "/hantu-codex/models/suri.dxf",
+    "clips": [
+      "Idle",
+      "Walk",
+      "Wave",
+      "Celebrate"
+    ],
+    "bounds": {
+      "min": [
+        -0.5792,
+        0.04,
+        -0.38
+      ],
+      "max": [
+        0.5792,
+        2.41,
+        0.322
+      ]
+    },
+    "height": 2.37,
+    "triangles": 6668
+  },
+  {
+    "id": "lina",
+    "name": "Lina",
+    "glb": "/hantu-codex/models/lina.glb",
+    "dxf": "/hantu-codex/models/lina.dxf",
+    "clips": [
+      "Idle",
+      "Walk",
+      "Wave",
+      "Celebrate"
+    ],
+    "bounds": {
+      "min": [
+        -0.5792,
+        0.04,
+        -0.38
+      ],
+      "max": [
+        0.5792,
+        2.41,
+        0.285
+      ]
+    },
+    "height": 2.37,
+    "triangles": 6672
+  },
+  {
+    "id": "dina",
+    "name": "Dina",
+    "glb": "/hantu-codex/models/dina.glb",
+    "dxf": "/hantu-codex/models/dina.dxf",
+    "clips": [
+      "Idle",
+      "Walk",
+      "Wave",
+      "Celebrate"
+    ],
+    "bounds": {
+      "min": [
+        -0.7208,
+        0.04,
+        -0.38
+      ],
+      "max": [
+        0.5792,
+        2.41,
+        0.37
+      ]
+    },
+    "height": 2.37,
+    "triangles": 7124
+  },
+  {
+    "id": "amina",
+    "name": "Amina",
+    "glb": "/hantu-codex/models/amina.glb",
+    "dxf": "/hantu-codex/models/amina.dxf",
+    "clips": [
+      "Idle",
+      "Walk",
+      "Wave",
+      "Celebrate"
+    ],
+    "bounds": {
+      "min": [
+        -0.6269,
+        0.04,
+        -0.35
+      ],
+      "max": [
+        0.5792,
+        2.42,
+        0.3366
+      ]
+    },
+    "height": 2.38,
+    "triangles": 6468
+  },
+  {
+    "id": "pontianak",
+    "name": "Pontianak",
+    "glb": "/hantu-codex/models/pontianak.glb",
+    "dxf": "/hantu-codex/models/pontianak.dxf",
+    "clips": [
+      "Idle",
+      "Walk",
+      "Wave",
+      "Celebrate"
+    ],
+    "bounds": {
+      "min": [
+        -0.5792,
+        0.04,
+        -0.38
+      ],
+      "max": [
+        0.6001,
+        2.41,
+        0.3366
+      ]
+    },
+    "height": 2.37,
+    "triangles": 7332
+  },
+  {
+    "id": "toyol",
+    "name": "Toyol",
+    "glb": "/hantu-codex/models/toyol.glb",
+    "dxf": "/hantu-codex/models/toyol.dxf",
+    "clips": [
+      "Idle",
+      "Walk",
+      "Wave",
+      "Celebrate"
+    ],
+    "bounds": {
+      "min": [
+        -0.5792,
+        0.04,
+        -0.2835
+      ],
+      "max": [
+        0.5827,
+        2.36,
+        0.285
+      ]
+    },
+    "height": 2.32,
+    "triangles": 6876
+  },
+  {
+    "id": "hantu-raya",
+    "name": "Hantu Raya",
+    "glb": "/hantu-codex/models/hantu-raya.glb",
+    "dxf": "/hantu-codex/models/hantu-raya.dxf",
+    "clips": [
+      "Idle",
+      "Walk",
+      "Wave",
+      "Celebrate"
+    ],
+    "bounds": {
+      "min": [
+        -0.61,
+        0.04,
+        -0.3366
+      ],
+      "max": [
+        0.61,
+        2.58,
+        0.3366
+      ]
+    },
+    "height": 2.54,
+    "triangles": 7156
+  },
+  {
+    "id": "langsuir",
+    "name": "Langsuir",
+    "glb": "/hantu-codex/models/langsuir.glb",
+    "dxf": "/hantu-codex/models/langsuir.dxf",
+    "clips": [
+      "Idle",
+      "Walk",
+      "Wave",
+      "Celebrate"
+    ],
+    "bounds": {
+      "min": [
+        -0.6031,
+        0.04,
+        -0.38
+      ],
+      "max": [
+        0.5792,
+        2.41,
+        0.3366
+      ]
+    },
+    "height": 2.37,
+    "triangles": 6640
+  },
+  {
+    "id": "pocong",
+    "name": "Pocong",
+    "glb": "/hantu-codex/models/pocong.glb",
+    "dxf": "/hantu-codex/models/pocong.dxf",
+    "clips": [
+      "Idle",
+      "Walk",
+      "Wave",
+      "Celebrate"
+    ],
+    "bounds": {
+      "min": [
+        -0.6081,
+        0.04,
+        -0.35
+      ],
+      "max": [
+        0.5792,
+        2.65,
+        0.3366
+      ]
+    },
+    "height": 2.61,
+    "triangles": 6888
+  },
+  {
+    "id": "orang-bunian",
+    "name": "Orang Bunian",
+    "glb": "/hantu-codex/models/orang-bunian.glb",
+    "dxf": "/hantu-codex/models/orang-bunian.dxf",
+    "clips": [
+      "Idle",
+      "Walk",
+      "Wave",
+      "Celebrate"
+    ],
+    "bounds": {
+      "min": [
+        -0.5792,
+        0.04,
+        -0.38
+      ],
+      "max": [
+        0.6001,
+        2.41,
+        0.285
+      ]
+    },
+    "height": 2.37,
+    "triangles": 6832
+  }
+]
