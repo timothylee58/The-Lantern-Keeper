@@ -1,0 +1,137 @@
+{
+  "frameWidth": 192,
+  "frameHeight": 256,
+  "columns": 12,
+  "rows": [
+    "front",
+    "right",
+    "back",
+    "left"
+  ],
+  "origin": [
+    0.5,
+    1
+  ],
+  "characters": [
+    {
+      "id": "ari",
+      "name": "Ari",
+      "image": "ari-walk.png",
+      "duration": 1.135200023651123,
+      "frameRate": 10.570824304076933,
+      "frames": 48
+    },
+    {
+      "id": "farah",
+      "name": "Farah",
+      "image": "farah-walk.png",
+      "duration": 1.135200023651123,
+      "frameRate": 10.570824304076933,
+      "frames": 48
+    },
+    {
+      "id": "mei-lin",
+      "name": "Mei Lin",
+      "image": "mei-lin-walk.png",
+      "duration": 1.2863999605178833,
+      "frameRate": 9.32835849526068,
+      "frames": 48
+    },
+    {
+      "id": "kavitha",
+      "name": "Kavitha",
+      "image": "kavitha-walk.png",
+      "duration": 1.2431999444961548,
+      "frameRate": 9.652510083455136,
+      "frames": 48
+    },
+    {
+      "id": "daniel",
+      "name": "Daniel",
+      "image": "daniel-walk.png",
+      "duration": 1.1136000156402588,
+      "frameRate": 10.775861917620986,
+      "frames": 48
+    },
+    {
+      "id": "suri",
+      "name": "Suri",
+      "image": "suri-walk.png",
+      "duration": 1.135200023651123,
+      "frameRate": 10.570824304076933,
+      "frames": 48
+    },
+    {
+      "id": "lina",
+      "name": "Lina",
+      "image": "lina-walk.png",
+      "duration": 1.2431999444961548,
+      "frameRate": 9.652510083455136,
+      "frames": 48
+    },
+    {
+      "id": "dina",
+      "name": "Dina",
+      "image": "dina-walk.png",
+      "duration": 1.264799952507019,
+      "frameRate": 9.487666390415528,
+      "frames": 48
+    },
+    {
+      "id": "amina",
+      "name": "Amina",
+      "image": "amina-walk.png",
+      "duration": 1.22160005569458,
+      "frameRate": 9.823182263344785,
+      "frames": 48
+    },
+    {
+      "id": "pontianak",
+      "name": "Pontianak",
+      "image": "pontianak-walk.png",
+      "duration": 1.1568000316619873,
+      "frameRate": 10.373443699478006,
+      "frames": 48
+    },
+    {
+      "id": "toyol",
+      "name": "Toyol",
+      "image": "toyol-walk.png",
+      "duration": 1.1136000156402588,
+      "frameRate": 10.775861917620986,
+      "frames": 48
+    },
+    {
+      "id": "hantu-raya",
+      "name": "Hantu Raya",
+      "image": "hantu-raya-walk.png",
+      "duration": 1.135200023651123,
+      "frameRate": 10.570824304076933,
+      "frames": 48
+    },
+    {
+      "id": "langsuir",
+      "name": "Langsuir",
+      "image": "langsuir-walk.png",
+      "duration": 1.22160005569458,
+      "frameRate": 9.823182263344785,
+      "frames": 48
+    },
+    {
+      "id": "pocong",
+      "name": "Pocong",
+      "image": "pocong-walk.png",
+      "duration": 1.264799952507019,
+      "frameRate": 9.487666390415528,
+      "frames": 48
+    },
+    {
+      "id": "orang-bunian",
+      "name": "Orang Bunian",
+      "image": "orang-bunian-walk.png",
+      "duration": 1.1568000316619873,
+      "frameRate": 10.373443699478006,
+      "frames": 48
+    }
+  ]
+}

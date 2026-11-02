@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Original parametric puppet models. Python standard library; no source assets."""
+"""Original parametric RPG models. Python standard library; no source assets."""
 from pathlib import Path
 import json, math, struct, zipfile
 
@@ -10,7 +10,7 @@ PALETTE = {
     'jade': '#5c9b87', 'mint': '#9acdb2', 'coral': '#cd7868', 'violet': '#8d799f',
     'terra': '#ac6d4f', 'skin': '#c48e66', 'warm': '#d9aa81', 'darkskin': '#a97551',
     'hair': '#292a37', 'eye': '#202339', 'white': '#fff2d3', 'rose': '#df9d86',
-    'leaf': '#75916e', 'bark': '#68745c', 'glow': '#f6d488',
+    'lip': '#966e62', 'leaf': '#75916e', 'bark': '#68745c', 'glow': '#f6d488',
 }
 
 def quat(axis, angle):
@@ -69,6 +69,20 @@ def cylinder(rt,rb,h,depth=1,sides=18):
     # Side order above faces inward for Y-up cylinders; reverse the full winding.
     return flatmesh(v,[f[::-1] for f in faces])
 
+def tunic(dress=False):
+    # Tailored shoulders and waist, rather than a straight cylindrical torso.
+    rings=[(-.375,.36,.24),(-.22,.31,.22),(0,.275,.20),(.20,.32,.22),(.32,.29,.20),(.39,.13,.12)]
+    if dress:rings=[(-.585,.49,.32),(-.34,.40,.28),(-.10,.29,.21),(.15,.28,.20),(.43,.32,.22),(.52,.28,.19),(.585,.13,.12)]
+    sides=32;v=[];faces=[]
+    for y,rx,rz in rings:
+        for i in range(sides):
+            a=2*math.pi*i/sides;v.append([rx*math.cos(a),y,rz*math.sin(a)])
+    for r in range(len(rings)-1):
+        for i in range(sides):
+            j=(i+1)%sides; a=r*sides; b=(r+1)*sides;faces.append([a+i,b+i,b+j,a+j])
+    faces.extend([list(range(sides)),list(range(len(v)-1,len(v)-sides-1,-1))])
+    return flatmesh(v,faces)
+
 def leaf(width,height,depth=.035):
     points=[(0,-height/2),(-width*.5,-height*.13),(-width*.38,height*.18),(0,height/2),(width*.38,height*.18),(width*.5,-height*.13)]
     v=[[x,y,-depth/2] for x,y in points]+[[x,y,depth/2] for x,y in points]
@@ -102,7 +116,7 @@ class Model:
         hexcolor=PALETTE.get(color,color).lstrip('#'); srgb=[int(hexcolor[i:i+2],16)/255 for i in [0,2,4]]
         # glTF material factors are linear, whereas the authored palette is sRGB.
         rgb=[c/12.92 if c<=.04045 else ((c+.055)/1.055)**2.4 for c in srgb]
-        mat={'name':color,'pbrMetallicRoughness':{'baseColorFactor':rgb+[1],'metallicFactor':0,'roughnessFactor':.86},'doubleSided':True}
+        mat={'name':color,'pbrMetallicRoughness':{'baseColorFactor':rgb+[1],'metallicFactor':(.6 if color=='gold' else 0),'roughnessFactor':(.34 if color in ['gold','glow'] else .72)},'doubleSided':True}
         if color=='glow':mat['emissiveFactor']=[c*.35 for c in rgb]
         self.colors[color]=len(self.materials); self.materials.append(mat); return self.colors[color]
     def part(self,name,geometry,color,parent=None,pos=(0,0,0),rotation=None):
@@ -126,15 +140,20 @@ class Model:
             x=-width+2*width*i/8; yy=y-.075+.055*(x/width)**2
             self.ball('Smile_%02d'%i,(.015,.011,.009),'eye',parent,(x,yy,z),True)
     def face(self,parent,skin='warm',spirit=False):
-        self.ball('Face',(.295,.325,.245),skin,parent)
+        self.ball('Face',(.275,.325,.235),skin,parent)
+        self.ball('Jaw',(.205,.15,.195),skin,parent,(0,-.17,.01))
         for side in [-1,1]:
-            self.ball('Ear',(.065,.085,.055),skin,parent,(side*.28,-.005,0),True)
-            eye=self.node('Blink_eye',parent,(side*.101,.045,.231)); self.eyes.append(eye)
-            self.ball('Eye',(.033,.044,.02),'eye',eye)
-            self.ball('Eye_glint',(.009,.012,.008),'white',eye,(-.008,.012,.018),True)
-            self.ball('Cheek',(.05,.023,.012),'rose',parent,(side*.169,-.045,.218),True)
-        self.ball('Nose',(.034,.04,.025),skin,parent,(0,-.012,.249),True)
-        self.smile(parent)
+            self.ball('Ear',(.045,.085,.035),skin,parent,(side*.268,-.005,0),True)
+            eye=self.node(('Left' if side<0 else 'Right')+'Blink',parent,(side*.101,.045,.219)); self.eyes.append(eye)
+            self.ball('Sclera',(.043,.021,.015),'cream',eye)
+            self.ball('Iris',(.017,.018,.008),'bark',eye,(0,0,.013),True)
+            self.ball('Pupil',(.009,.013,.006),'eye',eye,(0,0,.019),True)
+            self.ball('Eye_glint',(.004,.005,.003),'white',eye,(-.004,.006,.024),True)
+            self.ball('Brow',(.048,.009,.012),'hair',parent,(side*.104,.105,.217),True)
+        self.ball('Nose_bridge',(.025,.08,.035),skin,parent,(0,.01,.235),True)
+        self.ball('Nose_tip',(.035,.029,.036),skin,parent,(0,-.045,.266),True)
+        self.ball('Upper_lip',(.069,.009,.012),'lip',parent,(0,-.125,.215),True)
+        self.ball('Lower_lip',(.064,.013,.013),'lip',parent,(0,-.145,.214),True)
     def lantern(self,parent,pos=(0,-.76,0),color='gold'):
         group=self.node('Lantern',parent,pos)
         self.part('Lantern_light',cylinder(.115,.115,.25,.85,8),'glow',group)
@@ -146,13 +165,13 @@ class Model:
     def humanoid(self,shirt='jade',skin='warm',dress=False,headscarf=False,hair='short'):
         for side,label in [(-1,'Left'),(1,'Right')]:
             leg=self.node(label+'Leg',self.root,(side*.17,.85,0));self.joints[label+'Leg']=leg
-            self.ball(label+'Trouser',(.13,.34,.14),'indigo',leg,(0,-.29,0))
+            self.part(label+'Trouser',cylinder(.15,.12,.68,.95,20),'indigo',leg,(0,-.29,0))
             self.ball(label+'Shoe',(.15,.09,.22),'deep',leg,(0,-.72,.065))
         if dress:
-            self.part('Long_tunic',cylinder(.34,.49,1.17,.68,20),shirt,pos=(0,1.04,0))
+            self.part('Long_tunic',tunic(True),shirt,pos=(0,1.04,0))
             self.part('Hem_band',cylinder(.485,.495,.065,.68,20),'gold',pos=(0,.49,0))
         else:
-            self.part('Tunic',cylinder(.34,.4,.75,.7,20),shirt,pos=(0,1.28,0))
+            self.part('Tunic',tunic(),shirt,pos=(0,1.28,0))
             self.part('Tunic_hem',cylinder(.395,.405,.045,.7,20),'gold',pos=(0,.93,0))
         self.ball('Collar',(.17,.06,.14),'cream',pos=(0,1.68,0),detail=True)
         for side,label in [(-1,'Left'),(1,'Right')]:
@@ -173,66 +192,117 @@ class Model:
             self.ball('Hair_cap',(.304,.15,.24),'hair',head,(0,.245,-.035))
             for i in [-1,0,1]:self.ball('Paper_hair_lock',(.11,.14,.07),'hair',head,(i*.14,.21,.165))
         return head
+    def refine(self):
+        # Adult proportions, with real elbow/knee pivots and a breathing chest.
+        self.nodes[self.root]['scale']=[.8,.8,.8]
+        for side,label in [(-1,'Left'),(1,'Right')]:
+            leg=self.joints[label+'Leg']; self.nodes[leg]['translation']=[side*.16,1.05,0]
+            knee=self.node(label+'Knee',leg,(0,-.46,0));self.joints[label+'Knee']=knee
+            for ni in list(self.nodes[leg].get('children',[])):
+                if self.nodes[ni]['name']==label+'Shoe':
+                    self.nodes[leg]['children'].remove(ni);self.nodes[knee].setdefault('children',[]).append(ni)
+                    self.nodes[ni]['translation']=[0,-.50,.045];self.nodes[ni]['scale']=[.85,.8,.9]
+                elif self.nodes[ni]['name']==label+'Trouser':
+                    self.nodes[ni]['translation']=[0,-.23,0];self.nodes[ni]['scale']=[.85,.76,.85]
+            self.part(label+'Calf',cylinder(.105,.08,.49,.95,20),'indigo',knee,(0,-.23,0))
+            self.ball(label+'Kneecap',(.105,.10,.105),'indigo',knee)
+            arm=self.joints[label+'Arm']
+            elbow=self.node(label+'Elbow',arm,(side*.035,-.30,0));self.joints[label+'Elbow']=elbow
+            for ni in list(self.nodes[arm].get('children',[])):
+                name=self.nodes[ni]['name']
+                if ni==elbow:continue
+                if name==label+'Sleeve':
+                    self.nodes[ni]['translation']=[side*.015,-.15,0];self.nodes[ni]['scale']=[.87,.68,.87]
+                elif name!='Floating_sleeve':
+                    self.nodes[arm]['children'].remove(ni);self.nodes[elbow].setdefault('children',[]).append(ni)
+                    self.nodes[ni]['translation'][0]-=side*.035
+                    self.nodes[ni]['translation'][1]+=.25
+            sleeve=next(p for p in self.parts if self.nodes[p[0]]['name']==label+'Sleeve')
+            self.ball(label+'Forearm',(.085,.14,.09),sleeve[3],elbow,(0,-.125,0))
+        head=self.joints['Head'];self.nodes[head]['scale']=[.50,.50,.50]
+        self.nodes[head]['translation'][1]=2.03 if self.id!='toyol' else 1.94
+        self.part('Neck',cylinder(.09,.105,.18,.9,16),'mint' if self.id in ['toyol','hantu-raya'] else 'warm',pos=(0,1.87,0))
+        # Torso garments retain authored details as one coherent assembly.
+        for ni in list(self.nodes[self.root]['children']):
+            if ni not in [self.joints['LeftLeg'],self.joints['RightLeg'],head] and self.nodes[ni]['name']!='Neck':
+                self.nodes[ni]['translation'][1]+=.15
+        chest=self.node('Chest',self.root,(0,1.12,0));self.joints['Chest']=chest
+        for ni in list(self.nodes[self.root]['children']):
+            if ni not in [chest,self.joints['LeftLeg'],self.joints['RightLeg']]:
+                self.nodes[self.root]['children'].remove(ni);self.nodes[chest].setdefault('children',[]).append(ni)
+                self.nodes[ni]['translation'][1]-=1.12
+        for ni,node in enumerate(self.nodes):
+            if node['name']=='Lantern':self.joints['Prop'+str(ni)]=ni
+
     def animate(self):
         animations=[]
-        for clip,duration in [('Idle',3.2),('Walk',1.0),('Wave',2.4),('Celebrate',2.4)]:
-            steps=64
-            times=[duration*i/steps for i in range(steps+1)]; ti=self.accessor(times,'SCALAR',bounds=True); samplers=[];channels=[]
+        tempo=1+(sum(map(ord,self.id))%9-4)*.018
+        floating=self.id in ['pontianak','langsuir','orang-bunian']
+        for clip,duration in [('Idle',5.6),('Walk',1.2),('Wave',3.8),('Celebrate',4.2)]:
+            duration*=tempo;steps=96
+            times=[duration*i/steps for i in range(steps+1)];ti=self.accessor(times,'SCALAR',bounds=True);samplers=[];channels=[]
             tracks={self.root:('translation',[])}
             for key,ni in self.joints.items():tracks[ni]=('rotation',[])
             for i,t in enumerate(times):
-                phase=2*math.pi*i/steps; wave=math.sin(phase)
-                bounce=.015*(1-math.cos(phase))
-                if clip=='Walk':bounce=.025*(1-math.cos(phase*2))
-                if self.id in ['pontianak','langsuir','orang-bunian']:bounce=.045*(1-math.cos(phase))
-                if self.id=='pocong' and clip=='Walk':bounce=.12*(1-math.cos(phase*2))/2
-                if clip=='Celebrate':bounce=.16*(1-math.cos(phase*2))/2
-                tracks[self.root][1].append([0,bounce,0])
+                phase=2*math.pi*i/steps; wave=math.sin(phase);envelope=math.sin(phase/2)**2
+                bounce=.004*(1-math.cos(phase))
+                if clip=='Walk':bounce=.008*(1-math.cos(phase*2))
+                if floating:bounce=.035*(1-math.cos(phase))
+                if self.id=='pocong' and clip=='Walk':bounce=.07*(1-math.cos(phase*2))/2
+                tracks[self.root][1].append([.008*wave if clip!='Walk' else 0,bounce,0])
                 for key,ni in self.joints.items():
                     side=-1 if key.startswith('Left') else 1
-                    axis=(0,0,1);angle=side*.11 if key.endswith('Arm') else 0
-                    if key=='Head': axis=(0,1,0);angle=(.09 if clip=='Idle' else .06)*wave
-                    elif clip=='Walk':axis=(1,0,0);angle=side*wave*(.48 if key.endswith('Leg') else -.36)
-                    elif clip=='Wave' and key=='RightArm':angle=.11+2.3*math.sin(math.pi*i/steps)**2+.18*math.sin(phase*3)
-                    elif clip=='Celebrate' and key.endswith('Arm'):angle=side*(.11+2.15*math.sin(math.pi*i/steps)**2)
-                    elif key.endswith('Arm'):angle+=side*.045*wave
-                    if self.id=='pocong' and key.endswith('Leg'):angle=0
+                    axis=(1,0,0);angle=0
+                    if key=='Head':axis=(0,1,0);angle=.035*math.sin(phase+.3)-.035*math.sin(.3)
+                    elif key=='Chest':axis=(0,0,1);angle=.014*wave
+                    elif key.startswith('Prop'):angle=.06*math.sin(phase-.4)
+                    elif key.endswith('Arm'):
+                        axis=(0,0,1);angle=side*.10
+                        if clip=='Walk':axis=(1,0,0);angle=-side*.22*wave
+                        elif clip=='Wave' and side==1:angle+=1.05*envelope
+                        elif clip=='Celebrate':angle+=side*.70*envelope
+                        else:angle+=side*.015*wave
+                    elif key.endswith('Elbow'):
+                        angle=-.10
+                        if clip=='Walk':angle-=.10*(1+side*wave)
+                        elif clip=='Wave' and side==1:axis=(0,0,1);angle=1.05*envelope+.17*math.sin(phase*3)*envelope
+                        elif clip=='Celebrate':axis=(0,0,1);angle=side*.6*envelope
+                    elif key.endswith('Leg') and clip=='Walk':angle=side*.30*wave if not floating else side*.08*wave
+                    elif key.endswith('Knee') and clip=='Walk':angle=.52*max(0,-side*wave)**2 if not floating else .08*envelope
+                    if self.id=='pocong' and (key.endswith('Leg') or key.endswith('Knee')):angle=0
                     tracks[ni][1].append(quat(axis,angle))
             for ni,(path,values) in tracks.items():
-                values[-1]=list(values[0]); assert values[0]==values[-1]
-                oi=self.accessor(values,'VEC3' if path=='translation' else 'VEC4')
-                si=len(samplers);samplers.append({'input':ti,'output':oi,'interpolation':'LINEAR'});channels.append({'sampler':si,'target':{'node':ni,'path':path}})
+                values[-1]=list(values[0])
+                oi=self.accessor(values,'VEC3' if path=='translation' else 'VEC4');si=len(samplers)
+                samplers.append({'input':ti,'output':oi,'interpolation':'LINEAR'});channels.append({'sampler':si,'target':{'node':ni,'path':path}})
             for eye in self.eyes:
                 values=[]
                 for i in range(steps+1):
-                    phase=i/steps; distance=abs(phase-.72)
-                    close=max(0,1-distance/.045)
+                    distance=abs(i/steps-.72);close=max(0,1-distance/.027)
                     values.append([1,1-.94*close,1])
-                values[-1]=list(values[0])
-                oi=self.accessor(values,'VEC3'); si=len(samplers)
-                samplers.append({'input':ti,'output':oi,'interpolation':'LINEAR'})
-                channels.append({'sampler':si,'target':{'node':eye,'path':'scale'}})
+                values[-1]=list(values[0]);oi=self.accessor(values,'VEC3');si=len(samplers)
+                samplers.append({'input':ti,'output':oi,'interpolation':'LINEAR'});channels.append({'sampler':si,'target':{'node':eye,'path':'scale'}})
             animations.append({'name':clip,'samplers':samplers,'channels':channels})
         return animations
     def export(self):
         animations=self.animate()
-        gltf={'asset':{'version':'2.0','generator':'Lantern Keeper original procedural puppet builder'},'scene':0,'scenes':[{'nodes':[self.root]}],'nodes':self.nodes,'meshes':self.meshes,'materials':self.materials,'accessors':self.accessors,'bufferViews':self.views,'buffers':[{'byteLength':len(self.bin)}],'animations':animations,'extras':{'characterId':self.id,'units':'metres','front':'+Z','up':'+Y','rig':'articulated rigid parts; no skin weights'}}
+        gltf={'asset':{'version':'2.0','generator':'Lantern Keeper original procedural RPG character builder'},'scene':0,'scenes':[{'nodes':[self.root]}],'nodes':self.nodes,'meshes':self.meshes,'materials':self.materials,'accessors':self.accessors,'bufferViews':self.views,'buffers':[{'byteLength':len(self.bin)}],'animations':animations,'extras':{'characterId':self.id,'units':'metres','front':'+Z','up':'+Y','rig':'articulated adult-proportion rigid parts; no skin weights'}}
         js=json.dumps(gltf,separators=(',',':')).encode(); js+=b' '*((-len(js))%4); binary=bytes(self.bin);binary+=b'\0'*((-len(binary))%4)
         blob=struct.pack('<III',0x46546c67,2,12+8+len(js)+8+len(binary))+struct.pack('<II',len(js),0x4e4f534a)+js+struct.pack('<II',len(binary),0x004e4942)+binary
         (OUT/(self.id+'.glb')).write_bytes(blob)
         assert struct.unpack('<III',blob[:12])==(0x46546c67,2,len(blob))
         for view in self.views:assert view['byteOffset']+view['byteLength']<=len(self.bin)
         transforms={}
-        def walk(ni,pos,q):
-            node=self.nodes[ni]; local=rotate(node.get('translation',[0,0,0]),q); wp=[pos[i]+local[i] for i in range(3)];wq=qmul(q,node.get('rotation',[0,0,0,1])); transforms[ni]=(wp,wq)
-            for child in node.get('children',[]):walk(child,wp,wq)
-        walk(self.root,[0,0,0],[0,0,0,1])
+        def walk(ni,pos,q,scale):
+            node=self.nodes[ni]; local=rotate([v*scale[i] for i,v in enumerate(node.get('translation',[0,0,0]))],q); wp=[pos[i]+local[i] for i in range(3)];wq=qmul(q,node.get('rotation',[0,0,0,1])); ws=[scale[i]*node.get('scale',[1,1,1])[i] for i in range(3)]; transforms[ni]=(wp,wq,ws)
+            for child in node.get('children',[]):walk(child,wp,wq,ws)
+        walk(self.root,[0,0,0],[0,0,0,1],[1,1,1])
         # CAD uses Z-up: model (X,Y,Z) becomes CAD (X,-Z,Y), in millimetres.
         lines=['0','SECTION','2','HEADER','9','$ACADVER','1','AC1015','9','$INSUNITS','70','4','0','ENDSEC','0','SECTION','2','ENTITIES'];allpoints=[];triangles=0
         for ni,p,faces,color in self.parts:
-            pos,q=transforms[ni]; world=[]
+            pos,q,scale=transforms[ni]; world=[]
             for point in p:
-                v=rotate(point,q);world.append([v[i]+pos[i] for i in range(3)])
+                v=rotate([point[i]*scale[i] for i in range(3)],q);world.append([v[i]+pos[i] for i in range(3)])
             allpoints.extend(world)
             for face in faces:
                 triangles+=1;lines.extend(['0','3DFACE','8',(self.nodes[ni]['name']+'_'+color)[:200]])
@@ -330,9 +400,10 @@ def main():
         neighbor('dina','Dina','terra','skin',True,False,'long'),
         neighbor('amina','Amina','jade','warm',True,True),
     ]+[spirit(i,n) for i,n in [('pontianak','Pontianak'),('toyol','Toyol'),('hantu-raya','Hantu Raya'),('langsuir','Langsuir'),('pocong','Pocong'),('orang-bunian','Orang Bunian')]]
+    for m in models:m.refine()
     manifest=[m.export() for m in models]
     (OUT/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
-    readme='''LANTERN KEEPER — ORIGINAL CHARACTER MODEL PACK\n\n15 original procedural puppet characters, each supplied as GLB 2.0 and DXF.\nGLB: metres, +Y up, +Z forward, four seamless node-animation clips named Idle, Walk, Wave, Celebrate. Articulated rigid parts; not a skinned humanoid rig.\nDXF: static assembled rest pose, 3DFACE geometry, millimetres, +Z up. Layers identify part and material. Open as a polygon mesh drawing, not editable parametric solids.\nCharacter dimensions and individual filenames are in manifest.json.\nNo external artwork or meshes used. Friendly fictional spirit interpretations and everyday neighbor clothing; not authoritative cultural or religious representations.\nTo rebuild: python3 scripts/build-character-models.py in the project source.\n'''
+    readme='''LANTERN KEEPER — ORIGINAL CHARACTER MODEL PACK\n\n15 original procedural RPG characters, each supplied as GLB 2.0 and DXF.\nGLB: metres, +Y up, +Z forward, four seamless node-animation clips named Idle, Walk, Wave, Celebrate. Articulated rigid parts; not a skinned humanoid rig.\nDXF: static assembled rest pose, 3DFACE geometry, millimetres, +Z up. Layers identify part and material. Open as a polygon mesh drawing, not editable parametric solids.\nCharacter dimensions and individual filenames are in manifest.json.\nNo external artwork or meshes used. Friendly fictional spirit interpretations and everyday neighbor clothing; not authoritative cultural or religious representations.\nTo rebuild: python3 scripts/build-character-models.py in the project source.\n'''
     (OUT/'README.txt').write_text(readme)
     with zipfile.ZipFile(OUT/'characters.zip','w',zipfile.ZIP_DEFLATED,compresslevel=9) as archive:
         for file in sorted(OUT.iterdir()):

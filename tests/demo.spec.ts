@@ -83,6 +83,7 @@ test('self-hosted fonts, character loops and mobile reading layouts', async ({
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/hantu-codex/characters/');
+  await page.getByRole('button', { name: '3D model', exact: true }).click();
   await expect(page.locator('.character-view canvas')).toBeVisible();
   await expect(page.getByText('Folding a little friend…')).toHaveCount(0);
   for (const name of ['Walk', 'Wave', 'Celebrate', 'Idle']) {
@@ -259,6 +260,7 @@ test('artwork proportions and screenshots across both adventures', async ({ page
       );
     expect(bad).toBe(0);
     if (name === 'hantu-characters') {
+      await page.getByRole('button', { name: '3D model', exact: true }).click();
       await page.locator('.model-stage').scrollIntoViewIfNeeded();
       await expect(page.locator('.character-view canvas')).toBeVisible();
       await expect(page.getByText('Folding a little friend…')).toHaveCount(0);

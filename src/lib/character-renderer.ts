@@ -23,6 +23,8 @@ export class CharacterRenderer {
     this.renderer.setPixelRatio(1);
     this.renderer.setClearColor(0x0b1026, transparent ? 0 : 1);
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    this.renderer.toneMappingExposure = 1.15;
     const aspect = width / height;
     this.camera = new THREE.OrthographicCamera(
       -1.45 * aspect,
@@ -34,8 +36,8 @@ export class CharacterRenderer {
     );
     this.camera.position.set(3, 2.3, 6);
     this.camera.lookAt(0, 1, 0);
-    this.scene.add(new THREE.HemisphereLight(0xfff1d1, 0x677396, 2.4));
-    const key = new THREE.DirectionalLight(0xffdc9b, 3);
+    this.scene.add(new THREE.HemisphereLight(0xfff1d1, 0x677396, 1.5));
+    const key = new THREE.DirectionalLight(0xffe5bc, 2.5);
     key.position.set(3, 6, 5);
     this.scene.add(key);
     const rim = new THREE.DirectionalLight(0x9bd5d2, 1.7);
@@ -69,9 +71,10 @@ export class CharacterRenderer {
     for (const a of this.actors.values()) a.wrapper.visible = a === actor;
     actor.wrapper.rotation.y = turn;
     if (actor.active !== clip) {
-      if (actor.active) actor.actions.get(actor.active)?.fadeOut(0.2);
-      const action = actor.actions.get(clip)?.reset();
-      if (dt > 0) action?.fadeIn(0.2);
+      if (dt === 0) actor.mixer.stopAllAction();
+      else if (actor.active) actor.actions.get(actor.active)?.fadeOut(0.3);
+      const action = actor.actions.get(clip)?.reset().setEffectiveTimeScale(1).setEffectiveWeight(1);
+      if (dt > 0) action?.fadeIn(0.3);
       else action?.setEffectiveWeight(1);
       action?.play();
       actor.active = clip;

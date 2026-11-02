@@ -1,4 +1,5 @@
-import Phaser from 'phaser';
+import * as Phaser from 'phaser';
+import spriteManifest from '../../../public/sprites/manifest.json';
 import { CharacterRenderer } from '../../lib/character-renderer';
 import { GAME } from '../config';
 import { newRun, tick, obstacles, type Run, type Input } from './simulation';
@@ -32,7 +33,12 @@ export function createExpedition(
     modelsReady = false;
     modelDisposed = false;
     lastModel = 0;
+    walkTime = 0;
+    keeperDirection = 0;
+    spiritDirection = 0;
     preload() {
+      for (const id of ['ari', neighbor.spirit])
+        this.load.image(id + '-walk', '/hantu-codex/sprites/' + id + '-walk.png');
       this.load.image('paper-spirits', '/hantu-codex/art/spirit-sprites.webp');
       this.load.image('woodland', '/hantu-codex/art/woodland.webp');
     }
@@ -126,8 +132,15 @@ export function createExpedition(
         ['ONE', 'TWO', 'THREE', 'FOUR'].forEach((name, i) => {
           if (k[name] && Phaser.Input.Keyboard.JustDown(k[name])) input.tap = i;
         });
+        if (Math.abs(input.x) + Math.abs(input.y) > 0)
+          this.keeperDirection =
+            Math.abs(input.x) > Math.abs(input.y) ? (input.x > 0 ? 1 : 3) : input.y > 0 ? 0 : 2;
         const before = this.state;
         this.state = tick(this.state, input, delta / 1000);
+        const sx = this.state.spirit.x - before.spirit.x,
+          sy = this.state.spirit.y - before.spirit.y;
+        if (Math.abs(sx) + Math.abs(sy) > 0.01)
+          this.spiritDirection = Math.abs(sx) > Math.abs(sy) ? (sx > 0 ? 1 : 3) : sy > 0 ? 0 : 2;
         bridge.input.tap = undefined;
         if (
           this.state.clues.length > before.clues.length ||
@@ -154,6 +167,7 @@ export function createExpedition(
         const walking =
           Math.abs(bridge.input.x) + Math.abs(bridge.input.y) > 0 ||
           ['W', 'A', 'S', 'D', 'UP', 'DOWN', 'LEFT', 'RIGHT'].some((k) => this.keys[k]?.isDown);
+        this.walkTime += Math.min(dt, 0.1);
         for (const [id, key, clip] of [
           ['ari', 'keeper3d', this.finished ? 'Celebrate' : walking ? 'Walk' : 'Idle'],
           [
@@ -162,6 +176,26 @@ export function createExpedition(
             this.finished ? 'Celebrate' : neighbor.mechanic === 'chase' ? 'Walk' : 'Idle',
           ],
         ] as const) {
+          if (clip === 'Walk' && this.textures.exists(id + '-walk')) {
+            const record = spriteManifest.characters.find((c) => c.id === id)!;
+            const frame = Math.floor((this.walkTime / record.duration) * 12) % 12;
+            const row = id === 'ari' ? this.keeperDirection : this.spiritDirection;
+            const texture = this.textures.get(key) as Phaser.Textures.CanvasTexture;
+            texture.context.clearRect(0, 0, 180, 220);
+            texture.context.drawImage(
+              this.textures.get(id + '-walk').getSourceImage() as HTMLImageElement,
+              frame * 192,
+              row * 256,
+              192,
+              256,
+              7.5,
+              0,
+              165,
+              220,
+            );
+            texture.refresh();
+            continue;
+          }
           const canvas = this.models.render(id, clip, dt);
           const texture = this.textures.get(key) as Phaser.Textures.CanvasTexture;
           if (canvas) {

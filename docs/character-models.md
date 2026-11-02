@@ -40,4 +40,6 @@ Run `python3 scripts/build-character-models.py`. The generator uses the Python s
 
 Validation checks GLB magic/version/length, binary view bounds, unit normals, nondegenerate triangles and matching animation endpoints. All 15 files were also loaded by Three.js `GLTFLoader`, and all 60 clips were advanced through `AnimationMixer`. A rendered contact sheet was visually inspected. No external source artwork, textures or mesh assets are included.
 
-Refinement: each loop now has 65 sampled keys, eyelid blinks, gentle head turns and attached moving props. Woodland spirits float; Pocong hops with its legs together. The viewer pauses offscreen and supports keyboard rotation.
+Refinement: each loop now has 97 sampled keys, eyelid blinks, gentle head turns and attached moving props. Woodland spirits float; Pocong hops with its legs together. The viewer pauses offscreen and supports keyboard rotation.
+
+Adult RPG refinement (26 October 2026): smaller heads, articulated elbows and knees, subdued facial features and restrained motion. See character-refinement.md. Models remain stylized procedural meshes, not photorealistic or skinned humanoids. Unity package includes GLBs and editor setup scripts; Unity Editor validation is pending.
