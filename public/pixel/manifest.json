@@ -1,0 +1,128 @@
+{
+  "frameWidth": 48,
+  "frameHeight": 64,
+  "columns": 12,
+  "directions": [
+    "front",
+    "right",
+    "back",
+    "left"
+  ],
+  "clips": {
+    "Idle": 2.4,
+    "Walk": 1.2,
+    "Wave": 1.6,
+    "Celebrate": 1.2
+  },
+  "anchor": [
+    24,
+    59
+  ],
+  "characters": [
+    {
+      "id": "ari",
+      "name": "Ari",
+      "image": "ari.png",
+      "walkImage": "ari-walk.png",
+      "colors": 14
+    },
+    {
+      "id": "farah",
+      "name": "Farah",
+      "image": "farah.png",
+      "walkImage": "farah-walk.png",
+      "colors": 12
+    },
+    {
+      "id": "mei-lin",
+      "name": "Mei Lin",
+      "image": "mei-lin.png",
+      "walkImage": "mei-lin-walk.png",
+      "colors": 12
+    },
+    {
+      "id": "kavitha",
+      "name": "Kavitha",
+      "image": "kavitha.png",
+      "walkImage": "kavitha-walk.png",
+      "colors": 13
+    },
+    {
+      "id": "daniel",
+      "name": "Daniel",
+      "image": "daniel.png",
+      "walkImage": "daniel-walk.png",
+      "colors": 13
+    },
+    {
+      "id": "suri",
+      "name": "Suri",
+      "image": "suri.png",
+      "walkImage": "suri-walk.png",
+      "colors": 13
+    },
+    {
+      "id": "lina",
+      "name": "Lina",
+      "image": "lina.png",
+      "walkImage": "lina-walk.png",
+      "colors": 13
+    },
+    {
+      "id": "dina",
+      "name": "Dina",
+      "image": "dina.png",
+      "walkImage": "dina-walk.png",
+      "colors": 13
+    },
+    {
+      "id": "amina",
+      "name": "Amina",
+      "image": "amina.png",
+      "walkImage": "amina-walk.png",
+      "colors": 12
+    },
+    {
+      "id": "pontianak",
+      "name": "Pontianak",
+      "image": "pontianak.png",
+      "walkImage": "pontianak-walk.png",
+      "colors": 12
+    },
+    {
+      "id": "toyol",
+      "name": "Toyol",
+      "image": "toyol.png",
+      "walkImage": "toyol-walk.png",
+      "colors": 14
+    },
+    {
+      "id": "hantu-raya",
+      "name": "Hantu Raya",
+      "image": "hantu-raya.png",
+      "walkImage": "hantu-raya-walk.png",
+      "colors": 14
+    },
+    {
+      "id": "langsuir",
+      "name": "Langsuir",
+      "image": "langsuir.png",
+      "walkImage": "langsuir-walk.png",
+      "colors": 13
+    },
+    {
+      "id": "pocong",
+      "name": "Pocong",
+      "image": "pocong.png",
+      "walkImage": "pocong-walk.png",
+      "colors": 12
+    },
+    {
+      "id": "orang-bunian",
+      "name": "Orang Bunian",
+      "image": "orang-bunian.png",
+      "walkImage": "orang-bunian-walk.png",
+      "colors": 13
+    }
+  ]
+}

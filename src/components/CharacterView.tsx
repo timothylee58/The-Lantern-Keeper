@@ -1,108 +1,99 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import type { CharacterClip, CharacterRenderer } from '../lib/character-renderer';
+import { spriteFrame, DIRECTIONS, type CharacterClip } from '../lib/character-sprites';
 export default function CharacterView({
   id,
   clip = 'Idle',
   motionEnabled = true,
   interactive = false,
+  direction = 0,
 }: {
   id: string;
   clip?: CharacterClip;
   motionEnabled?: boolean;
   interactive?: boolean;
+  direction?: number;
 }) {
   const host = useRef<HTMLDivElement>(null),
-    clipRef = useRef(clip),
-    motionRef = useRef(motionEnabled),
-    turn = useRef(0),
+    canvas = useRef<HTMLCanvasElement>(null);
+  const state = useRef({ clip, motionEnabled, direction });
+  state.current = { clip, motionEnabled, direction };
+  const [turn, setTurn] = useState(0),
+    [error, setError] = useState(false),
+    [loaded, setLoaded] = useState(false);
+  const turnRef = useRef(0),
     drag = useRef<number | null>(null);
-  clipRef.current = clip;
-  motionRef.current = motionEnabled;
-  const [loading, setLoading] = useState(true),
-    [error, setError] = useState(false);
+  turnRef.current = turn;
   useEffect(() => {
     let dead = false,
-      frame = 0,
       visible = false,
-      started = false,
-      renderer: CharacterRenderer | undefined;
-    setLoading(true);
+      frame = 0,
+      elapsed = 0,
+      previous = 0,
+      lastClip = '',
+      lastDraw = '';
+    const img = new Image();
+    setLoaded(false);
     setError(false);
-    turn.current = 0;
-    const mount = host.current;
-    const start = () => {
-      if (started || dead) return;
-      started = true;
-      import('../lib/character-renderer')
-        .then(async ({ CharacterRenderer }) => {
-          if (dead || !mount) return;
-          renderer = new CharacterRenderer(480, 520);
-          mount.appendChild(renderer.renderer.domElement);
-          await renderer.load(id);
-          if (dead) return;
-          setLoading(false);
-          let last = performance.now(),
-            lastTurn = NaN,
-            lastClip = '',
-            wasMoving = false;
-          const tick = (now: number) => {
-            if (dead || !renderer) return;
-            const moving = motionRef.current && visible && !document.hidden;
-            if (
-              visible &&
-              !document.hidden &&
-              (moving || lastTurn !== turn.current || lastClip !== clipRef.current)
-            ) {
-              renderer.render(
-                id,
-                clipRef.current,
-                moving && wasMoving ? (now - last) / 1000 : 0,
-                turn.current,
-              );
-              lastTurn = turn.current;
-              lastClip = clipRef.current;
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+    });
+    if (host.current) observer.observe(host.current);
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    img.onload = () => {
+      if (dead) return;
+      setLoaded(true);
+      const tick = (now: number) => {
+        if (dead) return;
+        const s = state.current,
+          dir = (((s.direction + turnRef.current) % 4) + 4) % 4;
+        if (s.clip !== lastClip) {
+          elapsed = 0;
+          lastClip = s.clip;
+        }
+        if (visible && !document.hidden) {
+          if (s.motionEnabled && !reduced.matches && previous)
+            elapsed += Math.min((now - previous) / 1000, 0.1);
+          const pose = spriteFrame(s.clip, dir, elapsed),
+            draw = `${pose.x}:${pose.y}`;
+          if (draw !== lastDraw) {
+            const ctx = canvas.current?.getContext('2d');
+            if (ctx) {
+              ctx.imageSmoothingEnabled = false;
+              ctx.clearRect(0, 0, 192, 256);
+              ctx.drawImage(img, pose.x, pose.y, 48, 64, 0, 0, 192, 256);
+              lastDraw = draw;
             }
-            last = now;
-            wasMoving = moving;
-            frame = requestAnimationFrame(tick);
-          };
-          frame = requestAnimationFrame(tick);
-        })
-        .catch(() => {
-          if (!dead) {
-            renderer?.dispose();
-            setError(true);
-            setLoading(false);
           }
-        });
+        }
+        previous = now;
+        frame = requestAnimationFrame(tick);
+      };
+      frame = requestAnimationFrame(tick);
     };
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        visible = entry.isIntersecting;
-        if (visible) start();
-      },
-      { rootMargin: '160px' },
-    );
-    if (mount) observer.observe(mount);
+    img.onerror = () => {
+      if (!dead) setError(true);
+    };
+    img.src = `/hantu-codex/pixel/${id}.png`;
     return () => {
       dead = true;
       observer.disconnect();
       cancelAnimationFrame(frame);
-      renderer?.dispose();
+      img.onload = null;
+      img.onerror = null;
     };
   }, [id]);
   return (
     <div
-      className={`character-view ${interactive ? 'interactive' : ''}`}
       ref={host}
+      className={`character-view pixel-character ${interactive ? 'interactive' : ''}`}
       role="img"
+      aria-label={`8-bit character ${id.replaceAll('-', ' ')}, ${clip.toLowerCase()} loop, ${DIRECTIONS[(((direction + turn) % 4) + 4) % 4]} view`}
       tabIndex={interactive ? 0 : undefined}
-      aria-label={`Animated three-dimensional model of ${id.replaceAll('-', ' ')}, ${clip.toLowerCase()} loop${interactive ? '. Drag or use left and right arrow keys to turn.' : ''}`}
       onKeyDown={(e) => {
-        if (interactive && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+        if (interactive && ['ArrowLeft', 'ArrowRight'].includes(e.key)) {
           e.preventDefault();
-          turn.current += e.key === 'ArrowLeft' ? -0.2 : 0.2;
+          setTurn((v) => v + (e.key === 'ArrowRight' ? 1 : -1));
         }
       }}
       onPointerDown={(e) => {
@@ -111,23 +102,24 @@ export default function CharacterView({
           e.currentTarget.setPointerCapture(e.pointerId);
         }
       }}
-      onPointerMove={(e) => {
-        if (interactive && drag.current !== null) {
-          turn.current += (e.clientX - drag.current) * 0.01;
-          drag.current = e.clientX;
-        }
+      onPointerUp={(e) => {
+        if (drag.current !== null && Math.abs(e.clientX - drag.current) > 20)
+          setTurn((v) => v + (e.clientX > drag.current! ? 1 : -1));
+        drag.current = null;
       }}
-      onPointerUp={() => (drag.current = null)}
-      onPointerCancel={() => (drag.current = null)}
+      onPointerCancel={() => {
+        drag.current = null;
+      }}
     >
-      {loading && (
+      <canvas ref={canvas} width={192} height={256} aria-hidden="true" data-loaded={loaded} />
+      {!loaded && !error && (
         <span className="character-loading" role="status">
-          Folding a little friend…
+          Drawing a little adventurer…
         </span>
       )}
       {error && (
         <span className="character-loading" role="alert">
-          3D preview unavailable in this browser. Model downloads are still available.
+          Character sprite unavailable. Please reload.
         </span>
       )}
     </div>

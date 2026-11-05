@@ -1,6 +1,5 @@
 import * as Phaser from 'phaser';
-import spriteManifest from '../../../public/sprites/manifest.json';
-import { CharacterRenderer } from '../../lib/character-renderer';
+import { spriteFrame } from '../../lib/character-sprites';
 import { GAME } from '../config';
 import { newRun, tick, obstacles, type Run, type Input } from './simulation';
 import { lightClues, visibleClue } from '../mechanics/lanternLight';
@@ -29,16 +28,14 @@ export function createExpedition(
     keys: Record<string, Phaser.Input.Keyboard.Key> = {};
     sprite!: Phaser.GameObjects.Image;
     playerSprite!: Phaser.GameObjects.Container;
-    models!: CharacterRenderer;
-    modelsReady = false;
-    modelDisposed = false;
+    charactersReady = false;
     lastModel = 0;
     walkTime = 0;
     keeperDirection = 0;
     spiritDirection = 0;
     preload() {
       for (const id of ['ari', neighbor.spirit])
-        this.load.image(id + '-walk', '/hantu-codex/sprites/' + id + '-walk.png');
+        this.load.image(id + '-pixel', '/hantu-codex/pixel/' + id + '.png');
       this.load.image('paper-spirits', '/hantu-codex/art/spirit-sprites.webp');
       this.load.image('woodland', '/hantu-codex/art/woodland.webp');
     }
@@ -93,29 +90,23 @@ export function createExpedition(
           if (i >= 0 && i < 4) bridge.input.tap = i;
         }
       });
-      this.models = new CharacterRenderer(180, 220);
-      Promise.all([this.models.load('ari'), this.models.load(neighbor.spirit)])
-        .then(() => {
-          if (this.modelDisposed) return;
-          this.textures.createCanvas('keeper3d', 180, 220);
-          this.textures.createCanvas('spirit3d', 180, 220);
-          this.playerSprite.removeAll(true);
-          this.playerSprite.add(this.add.image(0, -14, 'keeper3d').setDisplaySize(58, 71));
-          this.sprite?.setTexture('spirit3d').setDisplaySize(85, 104);
-          this.modelsReady = true;
-        })
-        .catch(() => {
-          this.state.feedback = 'The character models could not load. Please retry the expedition.';
-        });
+      this.textures.createCanvas('keeperPixels', 180, 220);
+      this.textures.createCanvas('spiritPixels', 180, 220);
+      this.playerSprite.removeAll(true);
+      this.playerSprite.add(this.add.image(0, -14, 'keeperPixels').setDisplaySize(58, 77));
+      this.sprite?.setTexture('spiritPixels').setDisplaySize(85, 113);
+      this.charactersReady = ['ari', neighbor.spirit].every((id) =>
+        this.textures.exists(id + '-pixel'),
+      );
+      if (!this.charactersReady)
+        this.state.feedback = 'Character sprites could not load. Please retry the expedition.';
       this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
-        this.modelDisposed = true;
-        this.models.dispose();
         this.input.keyboard?.removeCapture(['UP', 'DOWN', 'LEFT', 'RIGHT', 'SPACE']);
       });
       bridge.onFrame(this.state);
     }
     update(time: number, delta: number) {
-      if (this.modelsReady && !bridge.paused && !this.finished) {
+      if (this.charactersReady && !bridge.paused && !this.finished) {
         const k = this.keys;
         const input = {
           ...bridge.input,
@@ -162,48 +153,39 @@ export function createExpedition(
         s = this.state;
       g.clear();
       this.glow.clear();
-      if (this.modelsReady && time - this.lastModel > 33) {
+      if (this.charactersReady && time - this.lastModel > 33) {
         const dt = bridge.paused || !bridge.motion ? 0 : (time - this.lastModel) / 1000;
         const walking =
           Math.abs(bridge.input.x) + Math.abs(bridge.input.y) > 0 ||
           ['W', 'A', 'S', 'D', 'UP', 'DOWN', 'LEFT', 'RIGHT'].some((k) => this.keys[k]?.isDown);
         this.walkTime += Math.min(dt, 0.1);
         for (const [id, key, clip] of [
-          ['ari', 'keeper3d', this.finished ? 'Celebrate' : walking ? 'Walk' : 'Idle'],
+          ['ari', 'keeperPixels', this.finished ? 'Celebrate' : walking ? 'Walk' : 'Idle'],
           [
             neighbor.spirit,
-            'spirit3d',
+            'spiritPixels',
             this.finished ? 'Celebrate' : neighbor.mechanic === 'chase' ? 'Walk' : 'Idle',
           ],
         ] as const) {
-          if (clip === 'Walk' && this.textures.exists(id + '-walk')) {
-            const record = spriteManifest.characters.find((c) => c.id === id)!;
-            const frame = Math.floor((this.walkTime / record.duration) * 12) % 12;
-            const row = id === 'ari' ? this.keeperDirection : this.spiritDirection;
-            const texture = this.textures.get(key) as Phaser.Textures.CanvasTexture;
-            texture.context.clearRect(0, 0, 180, 220);
-            texture.context.drawImage(
-              this.textures.get(id + '-walk').getSourceImage() as HTMLImageElement,
-              frame * 192,
-              row * 256,
-              192,
-              256,
-              7.5,
-              0,
-              165,
-              220,
-            );
-            texture.refresh();
-            continue;
-          }
-          const canvas = this.models.render(id, clip, dt);
+          const row = id === 'ari' ? this.keeperDirection : this.spiritDirection;
+          const pose = spriteFrame(clip, row, this.walkTime);
           const texture = this.textures.get(key) as Phaser.Textures.CanvasTexture;
-          if (canvas) {
-            texture.context.clearRect(0, 0, 180, 220);
-            texture.context.drawImage(canvas, 0, 0);
-            texture.refresh();
-          }
+          texture.context.imageSmoothingEnabled = false;
+          texture.context.clearRect(0, 0, 180, 220);
+          texture.context.drawImage(
+            this.textures.get(id + '-pixel').getSourceImage() as HTMLImageElement,
+            pose.x,
+            pose.y,
+            48,
+            64,
+            7.5,
+            0,
+            165,
+            220,
+          );
+          texture.refresh();
         }
+
         this.lastModel = time;
       }
       g.fillStyle(0x0b1026, 0.18).fillRoundedRect(25, 35, 910, 530, 60);
@@ -265,7 +247,7 @@ export function createExpedition(
             )
             .strokePath();
       } else this.sprite?.setVisible(s.phase < 3).setPosition(s.spirit.x, s.spirit.y - 12);
-      this.playerSprite.setVisible(this.modelsReady).setPosition(s.player.x, s.player.y);
+      this.playerSprite.setVisible(this.charactersReady).setPosition(s.player.x, s.player.y);
       for (let i = 0; i < 20; i++) {
         const y = 65 + ((i * 71) % 470) + (bridge.motion ? Math.sin(time * 0.001 + i) * 8 : 0);
         g.fillStyle(0xffd36e, 0.4).fillCircle(55 + ((i * 137) % 850), y, 1.5);
@@ -322,6 +304,7 @@ export function createExpedition(
   }
   return new Phaser.Game({
     type: Phaser.AUTO,
+    pixelArt: true,
     parent,
     width: portrait ? 480 : GAME.WIDTH,
     height: GAME.HEIGHT,

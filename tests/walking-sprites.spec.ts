@@ -1,39 +1,64 @@
 import { test, expect } from '@playwright/test';
-import manifest from '../public/sprites/manifest.json';
-test('all character walking sheets, directions, pause and downloads', async ({ page }, info) => {
+import manifest from '../public/pixel/manifest.json';
+test('all 15 pixel characters, directional loops, pause and no 3D requests', async ({
+  page,
+}, info) => {
+  const modelRequests: string[] = [];
+  page.on('request', (r) => {
+    if (/\.glb|\/models\//.test(r.url())) modelRequests.push(r.url());
+  });
   await page.goto('/hantu-codex/characters/');
   for (const c of manifest.characters) {
     await page
       .getByRole('group', { name: 'Choose character' })
       .getByRole('button', { name: new RegExp('^' + c.name) })
       .click();
-    const sprite = page.locator('.walking-sprite');
-    await sprite.scrollIntoViewIfNeeded();
-    await expect(sprite).toBeVisible();
-    const response = await page.request.get('/hantu-codex/sprites/' + c.image);
-    expect(response.ok()).toBeTruthy();
-    expect((await response.body()).subarray(1, 4).toString()).toBe('PNG');
+    const canvas = page.locator('.character-view canvas');
+    await canvas.scrollIntoViewIfNeeded();
+    await expect(canvas).toHaveAttribute('data-loaded', 'true');
+    await expect(canvas).toHaveCSS('image-rendering', 'pixelated');
+    for (const name of ['Idle', 'Walk', 'Wave', 'Celebrate']) {
+      await page.getByRole('button', { name, exact: true }).click();
+      await expect(page.locator('.character-view')).toHaveAttribute(
+        'aria-label',
+        new RegExp(name.toLowerCase() + ' loop'),
+      );
+    }
     await page
-      .getByRole('group', { name: 'Walking direction' })
+      .getByRole('group', { name: 'Character direction' })
       .getByRole('button', { name: 'right', exact: true })
       .click();
-    await expect(sprite).toHaveCSS('background-position-y', '-256px');
+    await expect(page.locator('.character-view')).toHaveAttribute('aria-label', /right view/);
+    const response = await page.request.get('/hantu-codex/pixel/' + c.image);
+    expect(response.ok()).toBeTruthy();
+    const png = await response.body();
+    expect(png.readUInt32BE(16)).toBe(576);
+    expect(png.readUInt32BE(20)).toBe(1024);
   }
-  await expect(page.locator('.walking-sprite')).toHaveCSS('animation-play-state', 'running');
+  await page.getByRole('button', { name: 'Walk', exact: true }).click();
+  const canvas = page.locator('.character-view canvas');
+  await canvas.scrollIntoViewIfNeeded();
+  const pixels = () => canvas.evaluate((el) => (el as HTMLCanvasElement).toDataURL());
+  const before = await pixels();
+  await expect.poll(pixels).not.toBe(before);
   await page.getByRole('button', { name: 'Pause movement' }).click();
-  await expect(page.locator('.walking-sprite')).toHaveCSS('animation-play-state', 'paused');
+  await canvas.scrollIntoViewIfNeeded();
+  const paused = await pixels();
+  await page.waitForTimeout(250);
+  expect(await pixels()).toBe(paused);
   await page.getByRole('button', { name: 'Play movement' }).click();
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await expect(page.locator('.walking-sprite')).toHaveCSS('animation-play-state', 'paused');
-  for (const href of [
-    '/hantu-codex/sprites/walking-sprites.zip',
-    '/hantu-codex/models/lantern-keeper-unity.unitypackage',
-  ])
-    expect((await page.request.get(href)).ok()).toBeTruthy();
+  await canvas.scrollIntoViewIfNeeded();
+  const reduced = await pixels();
+  await page.waitForTimeout(250);
+  expect(await pixels()).toBe(reduced);
+  expect((await page.request.get('/hantu-codex/pixel/characters-8bit.zip')).ok()).toBeTruthy();
+  expect(await page.getByRole('button', { name: '3D model', exact: true }).count()).toBe(0);
+  expect(modelRequests).toEqual([]);
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
   ).toBeTruthy();
-  await page.screenshot({ path: info.outputPath('walking-workshop.png') });
+  await page.screenshot({ path: info.outputPath('pixel-workshop.png') });
   if (info.project.name === 'desktop') {
     await page.setViewportSize({ width: 1050, height: 930 });
     await page.setContent(
@@ -41,9 +66,9 @@ test('all character walking sheets, directions, pause and downloads', async ({ p
         manifest.characters
           .map(
             (c) =>
-              '<article><div style="width:192px;height:256px;background-image:url(http://127.0.0.1:4173/hantu-codex/sprites/' +
+              '<article><div style="width:192px;height:256px;background-size:2304px 4096px;image-rendering:pixelated;background-image:url(http://127.0.0.1:4173/hantu-codex/pixel/' +
               c.image +
-              ');background-position:-576px -256px"></div><p style="margin:4px;text-align:center">' +
+              ');"></div><p style="margin:4px;text-align:center">' +
               c.name +
               '</p></article>',
           )
@@ -62,6 +87,6 @@ test('all character walking sheets, directions, pause and downloads', async ({ p
         ),
       );
     });
-    await page.screenshot({ path: info.outputPath('all-walking-characters.png') });
+    await page.screenshot({ path: info.outputPath('all-pixel-characters.png') });
   }
 });

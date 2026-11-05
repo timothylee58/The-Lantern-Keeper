@@ -83,9 +83,8 @@ test('self-hosted fonts, character loops and mobile reading layouts', async ({
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/hantu-codex/characters/');
-  await page.getByRole('button', { name: '3D model', exact: true }).click();
   await expect(page.locator('.character-view canvas')).toBeVisible();
-  await expect(page.getByText('Folding a little friend…')).toHaveCount(0);
+  await expect(page.getByText('Drawing a little adventurer…')).toHaveCount(0);
   for (const name of ['Walk', 'Wave', 'Celebrate', 'Idle']) {
     await page.getByRole('button', { name, exact: true }).click();
     await expect(page.getByRole('button', { name, exact: true })).toHaveAttribute(
@@ -97,14 +96,14 @@ test('self-hosted fonts, character loops and mobile reading layouts', async ({
   await expect(page.getByRole('button', { name: 'Play movement' })).toBeVisible();
   await page.getByRole('button', { name: 'Toyol SPIRIT', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Toyol', exact: true })).toBeVisible();
-  await expect(page.getByText('Folding a little friend…')).toHaveCount(0);
-  await expect(page.getByRole('link', { name: /Animated GLB/ })).toHaveAttribute(
+  await expect(page.getByText('Drawing a little adventurer…')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: /Character atlas/ })).toHaveAttribute(
     'href',
-    '/hantu-codex/models/toyol.glb',
+    '/hantu-codex/pixel/toyol.png',
   );
-  await expect(page.getByRole('link', { name: /CAD-compatible DXF/ })).toHaveAttribute(
+  await expect(page.getByRole('link', { name: /Walking sprite sheet/ })).toHaveAttribute(
     'href',
-    '/hantu-codex/models/toyol.dxf',
+    '/hantu-codex/pixel/toyol-walk.png',
   );
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.goto('/hantu-codex/codex/');
@@ -260,10 +259,9 @@ test('artwork proportions and screenshots across both adventures', async ({ page
       );
     expect(bad).toBe(0);
     if (name === 'hantu-characters') {
-      await page.getByRole('button', { name: '3D model', exact: true }).click();
       await page.locator('.model-stage').scrollIntoViewIfNeeded();
       await expect(page.locator('.character-view canvas')).toBeVisible();
-      await expect(page.getByText('Folding a little friend…')).toHaveCount(0);
+      await expect(page.getByText('Drawing a little adventurer…')).toHaveCount(0);
       expect(
         await page
           .locator('.character-view canvas')

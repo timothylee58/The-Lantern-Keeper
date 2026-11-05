@@ -2,8 +2,7 @@
 import { useState } from 'react';
 import { NEIGHBORS, SPIRITS } from '../data';
 import CharacterView from './CharacterView';
-import WalkingSprite from './WalkingSprite';
-import type { CharacterClip } from '../lib/character-renderer';
+import { DIRECTIONS, type CharacterClip } from '../lib/character-sprites';
 const CHARACTERS = [
   { id: 'ari', name: 'Ari', role: 'The lantern keeper' },
   ...NEIGHBORS.map((n) => ({ id: n.id, name: n.name, role: n.community })),
@@ -13,7 +12,7 @@ export default function CharacterWorkshop({ motionEnabled }: { motionEnabled: bo
   const [id, setId] = useState('ari'),
     [clip, setClip] = useState<CharacterClip>('Idle'),
     [paused, setPaused] = useState(false),
-    [spriteMode, setSpriteMode] = useState(true);
+    [direction, setDirection] = useState(0);
   const selected = CHARACTERS.find((c) => c.id === id)!;
   return (
     <section className="page-section">
@@ -26,12 +25,12 @@ export default function CharacterWorkshop({ motionEnabled }: { motionEnabled: bo
             <em>Stories in motion.</em>
           </h1>
           <p>
-            Meet the 3D characters behind the adventure.
+            Meet the 8-bit characters behind the adventure.
             <br />
-            Explore four walking directions, preview a 3D movement, or take a copy with you.
+            Choose a direction and a movement, then take your favorite sprites with you.
           </p>
         </div>
-        <a className="gold-button" href="/hantu-codex/models/characters.zip" download>
+        <a className="gold-button" href="/hantu-codex/pixel/characters-8bit.zip" download>
           All 15 characters ↓
         </a>
       </div>
@@ -55,36 +54,32 @@ export default function CharacterWorkshop({ motionEnabled }: { motionEnabled: bo
             </button>
           ))}
         </div>
-        <div className={`model-stage ${spriteMode ? 'sprite-stage' : ''}`}>
-          <div className="model-ground" />
-          {spriteMode ? (
-            <WalkingSprite key={id} id={id} moving={motionEnabled && !paused} />
-          ) : (
-            <CharacterView
-              key={id}
-              id={id}
-              clip={clip}
-              motionEnabled={motionEnabled && !paused}
-              interactive
-            />
-          )}
-          <span className="model-stage-note">
-            {spriteMode
-              ? 'WALKING CYCLE · ORIGINAL RPG CHARACTER'
-              : 'DRAG TO TURN · ORIGINAL RPG CHARACTER'}
-          </span>
+        <div className="model-stage pixel-stage">
+          <CharacterView
+            key={`${id}-${direction}`}
+            id={id}
+            clip={clip}
+            direction={direction}
+            motionEnabled={motionEnabled && !paused}
+            interactive
+          />
+          <span className="model-stage-note">48 × 64 PIXELS · ORIGINAL 8-BIT CHARACTERS</span>
         </div>
         <div className="model-details">
           <span className="eyebrow">{selected.role}</span>
           <h2>{selected.name}</h2>
-          <p>Grounded proportions, familiar clothing, and four expressive movement loops.</p>
-          <div className="clip-controls" role="group" aria-label="Preview format">
-            <button aria-pressed={spriteMode} onClick={() => setSpriteMode(true)}>
-              Walking sprites
-            </button>
-            <button aria-pressed={!spriteMode} onClick={() => setSpriteMode(false)}>
-              3D model
-            </button>
+          <p>Familiar faces, tiny pixels. Four directions and four expressive movement loops.</p>
+          <div className="clip-controls" role="group" aria-label="Character direction">
+            {DIRECTIONS.map((d, i) => (
+              <button
+                key={d}
+                aria-pressed={direction === i}
+                className={direction === i ? 'active' : ''}
+                onClick={() => setDirection(i)}
+              >
+                {d}
+              </button>
+            ))}
           </div>
           <div className="clip-controls" role="group" aria-label="Movement loop">
             {(['Idle', 'Walk', 'Wave', 'Celebrate'] as CharacterClip[]).map((c) => (
@@ -94,7 +89,6 @@ export default function CharacterWorkshop({ motionEnabled }: { motionEnabled: bo
                 className={clip === c ? 'active' : ''}
                 onClick={() => {
                   setClip(c);
-                  setSpriteMode(false);
                 }}
               >
                 {c}
@@ -105,25 +99,19 @@ export default function CharacterWorkshop({ motionEnabled }: { motionEnabled: bo
             {paused ? 'Play movement' : 'Pause movement'} {paused ? '▷' : 'Ⅱ'}
           </button>
           <div className="model-downloads">
-            <a href={`/hantu-codex/sprites/${id}-walk.png`} download>
-              Walking sprite sheet ↓<small>48 frames · transparent PNG</small>
+            <a href={`/hantu-codex/pixel/${id}.png`} download>
+              Character atlas ↓<small>192 frames · transparent pixel PNG</small>
             </a>
-            <a href="/hantu-codex/sprites/walking-sprites.zip" download>
-              All walking sprites ↓<small>15 sheets + frame manifest</small>
+            <a href={`/hantu-codex/pixel/${id}-walk.png`} download>
+              Walking sprite sheet ↓<small>48 frames · four directions</small>
             </a>
-            <a href="/hantu-codex/models/lantern-keeper-unity.unitypackage" download>
-              Unity package ↓<small>15 models + sprites + Unity setup guide</small>
-            </a>
-            <a href={`/hantu-codex/models/${id}.glb`} download>
-              Animated GLB ↓<small>Geometry + materials + four loops</small>
-            </a>
-            <a href={`/hantu-codex/models/${id}.dxf`} download>
-              CAD-compatible DXF ↓<small>Static 3D mesh · millimeters</small>
+            <a href="/hantu-codex/pixel/characters-8bit.zip" download>
+              All 15 pixel characters ↓<small>Atlases + frame manifest</small>
             </a>
           </div>
           <p className="model-file-note">
-            DXF uses editable 3DFACE mesh geometry. It is not a native DWG or a parametric solid.
-            Animation lives in the GLB file.
+            Crisp pixels and a limited palette. Includes idle, walk, wave and
+            celebration loops.
           </p>
         </div>
       </div>
