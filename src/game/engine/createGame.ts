@@ -35,7 +35,7 @@ export function createExpedition(
     spiritDirection = 0;
     preload() {
       for (const id of ['ari', neighbor.spirit])
-        this.load.image(id + '-pixel', '/hantu-codex/pixel/' + id + '.png');
+        this.load.image(id + '-pixel', '/hantu-codex/painted/' + id + '.png');
       this.load.image('paper-spirits', '/hantu-codex/art/spirit-sprites.webp');
       this.load.image('woodland', '/hantu-codex/art/woodland.webp');
     }
@@ -170,14 +170,14 @@ export function createExpedition(
           const row = id === 'ari' ? this.keeperDirection : this.spiritDirection;
           const pose = spriteFrame(clip, row, this.walkTime);
           const texture = this.textures.get(key) as Phaser.Textures.CanvasTexture;
-          texture.context.imageSmoothingEnabled = false;
+          texture.context.imageSmoothingEnabled = true;
           texture.context.clearRect(0, 0, 180, 220);
           texture.context.drawImage(
             this.textures.get(id + '-pixel').getSourceImage() as HTMLImageElement,
             pose.x,
             pose.y,
-            48,
-            64,
+            192,
+            256,
             7.5,
             0,
             165,
@@ -304,7 +304,7 @@ export function createExpedition(
   }
   return new Phaser.Game({
     type: Phaser.AUTO,
-    pixelArt: true,
+    pixelArt: false,
     parent,
     width: portrait ? 480 : GAME.WIDTH,
     height: GAME.HEIGHT,

@@ -59,9 +59,9 @@ export default function CharacterView({
           if (draw !== lastDraw) {
             const ctx = canvas.current?.getContext('2d');
             if (ctx) {
-              ctx.imageSmoothingEnabled = false;
+              ctx.imageSmoothingEnabled = true;
               ctx.clearRect(0, 0, 192, 256);
-              ctx.drawImage(img, pose.x, pose.y, 48, 64, 0, 0, 192, 256);
+              ctx.drawImage(img, pose.x, pose.y, 192, 256, 0, 0, 192, 256);
               lastDraw = draw;
             }
           }
@@ -74,7 +74,7 @@ export default function CharacterView({
     img.onerror = () => {
       if (!dead) setError(true);
     };
-    img.src = `/hantu-codex/pixel/${id}.png`;
+    img.src = `/hantu-codex/painted/${id}.png`;
     return () => {
       dead = true;
       observer.disconnect();
@@ -88,7 +88,7 @@ export default function CharacterView({
       ref={host}
       className={`character-view pixel-character ${interactive ? 'interactive' : ''}`}
       role="img"
-      aria-label={`8-bit character ${id.replaceAll('-', ' ')}, ${clip.toLowerCase()} loop, ${DIRECTIONS[(((direction + turn) % 4) + 4) % 4]} view`}
+      aria-label={`Painted character ${id.replaceAll('-', ' ')}, ${clip.toLowerCase()} loop, ${DIRECTIONS[clip === 'Wave' || clip === 'Celebrate' ? 0 : (((direction + turn) % 4) + 4) % 4]} view`}
       tabIndex={interactive ? 0 : undefined}
       onKeyDown={(e) => {
         if (interactive && ['ArrowLeft', 'ArrowRight'].includes(e.key)) {

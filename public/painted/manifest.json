@@ -1,0 +1,110 @@
+{
+  "frameWidth": 192,
+  "frameHeight": 256,
+  "columns": 8,
+  "rows": 6,
+  "directions": [
+    "front",
+    "right",
+    "back",
+    "left"
+  ],
+  "clips": {
+    "Idle": 1,
+    "Walk": 1,
+    "Wave": 1.5,
+    "Celebrate": 1.5
+  },
+  "characters": [
+    {
+      "id": "amina",
+      "frames": 48,
+      "name": "Amina",
+      "image": "amina.png"
+    },
+    {
+      "id": "ari",
+      "frames": 48,
+      "name": "Ari",
+      "image": "ari.png"
+    },
+    {
+      "id": "daniel",
+      "frames": 48,
+      "name": "Daniel",
+      "image": "daniel.png"
+    },
+    {
+      "id": "dina",
+      "frames": 48,
+      "name": "Dina",
+      "image": "dina.png"
+    },
+    {
+      "id": "farah",
+      "frames": 48,
+      "name": "Farah",
+      "image": "farah.png"
+    },
+    {
+      "id": "hantu-raya",
+      "frames": 48,
+      "name": "Hantu Raya",
+      "image": "hantu-raya.png"
+    },
+    {
+      "id": "kavitha",
+      "frames": 48,
+      "name": "Kavitha",
+      "image": "kavitha.png"
+    },
+    {
+      "id": "langsuir",
+      "frames": 48,
+      "name": "Langsuir",
+      "image": "langsuir.png"
+    },
+    {
+      "id": "lina",
+      "frames": 48,
+      "name": "Lina",
+      "image": "lina.png"
+    },
+    {
+      "id": "mei-lin",
+      "frames": 48,
+      "name": "Mei Lin",
+      "image": "mei-lin.png"
+    },
+    {
+      "id": "orang-bunian",
+      "frames": 48,
+      "name": "Orang Bunian",
+      "image": "orang-bunian.png"
+    },
+    {
+      "id": "pocong",
+      "frames": 48,
+      "name": "Pocong",
+      "image": "pocong.png"
+    },
+    {
+      "id": "pontianak",
+      "frames": 48,
+      "name": "Pontianak",
+      "image": "pontianak.png"
+    },
+    {
+      "id": "suri",
+      "frames": 48,
+      "name": "Suri",
+      "image": "suri.png"
+    },
+    {
+      "id": "toyol",
+      "frames": 48,
+      "name": "Toyol",
+      "image": "toyol.png"
+    }
+  ]
+}

@@ -1766,7 +1766,7 @@ a.gold-button,
 @media(min-width:761px){.hero-art{background-image:url('/hantu-codex/art/village-wide.webp')}}
 
 /* Pixel-native characters replace all former 3D character views. */
-.pixel-character canvas { image-rendering: pixelated; object-fit: contain; }
+.pixel-character canvas { image-rendering: auto; object-fit: contain; }
 .pixel-stage { background: radial-gradient(ellipse at center, #49524e44, transparent 70%); }
 .pixel-stage .character-view { height: 100%; }
 .pixel-stage canvas { max-height: 512px; }

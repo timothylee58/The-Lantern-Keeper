@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import manifest from '../public/pixel/manifest.json';
+import manifest from '../public/painted/manifest.json';
 test('all 15 pixel characters, directional loops, pause and no 3D requests', async ({
   page,
 }, info) => {
@@ -16,7 +16,7 @@ test('all 15 pixel characters, directional loops, pause and no 3D requests', asy
     const canvas = page.locator('.character-view canvas');
     await canvas.scrollIntoViewIfNeeded();
     await expect(canvas).toHaveAttribute('data-loaded', 'true');
-    await expect(canvas).toHaveCSS('image-rendering', 'pixelated');
+    await expect(canvas).toHaveCSS('image-rendering', 'auto');
     for (const name of ['Idle', 'Walk', 'Wave', 'Celebrate']) {
       await page.getByRole('button', { name, exact: true }).click();
       await expect(page.locator('.character-view')).toHaveAttribute(
@@ -24,16 +24,17 @@ test('all 15 pixel characters, directional loops, pause and no 3D requests', asy
         new RegExp(name.toLowerCase() + ' loop'),
       );
     }
+    await page.getByRole('button', { name: 'Walk', exact: true }).click();
     await page
       .getByRole('group', { name: 'Character direction' })
       .getByRole('button', { name: 'right', exact: true })
       .click();
     await expect(page.locator('.character-view')).toHaveAttribute('aria-label', /right view/);
-    const response = await page.request.get('/hantu-codex/pixel/' + c.image);
+    const response = await page.request.get('/hantu-codex/painted/' + c.image);
     expect(response.ok()).toBeTruthy();
     const png = await response.body();
-    expect(png.readUInt32BE(16)).toBe(576);
-    expect(png.readUInt32BE(20)).toBe(1024);
+    expect(png.readUInt32BE(16)).toBe(1536);
+    expect(png.readUInt32BE(20)).toBe(1536);
   }
   await page.getByRole('button', { name: 'Walk', exact: true }).click();
   const canvas = page.locator('.character-view canvas');
@@ -52,7 +53,7 @@ test('all 15 pixel characters, directional loops, pause and no 3D requests', asy
   const reduced = await pixels();
   await page.waitForTimeout(250);
   expect(await pixels()).toBe(reduced);
-  expect((await page.request.get('/hantu-codex/pixel/characters-8bit.zip')).ok()).toBeTruthy();
+  expect((await page.request.get('/hantu-codex/painted/characters-painted.zip')).ok()).toBeTruthy();
   expect(await page.getByRole('button', { name: '3D model', exact: true }).count()).toBe(0);
   expect(modelRequests).toEqual([]);
   expect(
@@ -66,7 +67,7 @@ test('all 15 pixel characters, directional loops, pause and no 3D requests', asy
         manifest.characters
           .map(
             (c) =>
-              '<article><div style="width:192px;height:256px;background-size:2304px 4096px;image-rendering:pixelated;background-image:url(http://127.0.0.1:4173/hantu-codex/pixel/' +
+              '<article><div style="width:192px;height:256px;background-size:1536px 1536px;background-image:url(http://127.0.0.1:4173/hantu-codex/painted/' +
               c.image +
               ');"></div><p style="margin:4px;text-align:center">' +
               c.name +

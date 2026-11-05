@@ -99,11 +99,11 @@ test('self-hosted fonts, character loops and mobile reading layouts', async ({
   await expect(page.getByText('Drawing a little adventurer…')).toHaveCount(0);
   await expect(page.getByRole('link', { name: /Character atlas/ })).toHaveAttribute(
     'href',
-    '/hantu-codex/pixel/toyol.png',
+    '/hantu-codex/painted/toyol.png',
   );
   await expect(page.getByRole('link', { name: /Walking sprite sheet/ })).toHaveAttribute(
     'href',
-    '/hantu-codex/pixel/toyol-walk.png',
+    '/hantu-codex/painted/toyol-walk.png',
   );
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.goto('/hantu-codex/codex/');
