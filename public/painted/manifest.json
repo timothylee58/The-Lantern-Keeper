@@ -18,93 +18,93 @@
   "characters": [
     {
       "id": "amina",
-      "frames": 48,
       "name": "Amina",
-      "image": "amina.png"
+      "image": "amina.png",
+      "frames": 48
     },
     {
       "id": "ari",
-      "frames": 48,
       "name": "Ari",
-      "image": "ari.png"
+      "image": "ari.png",
+      "frames": 48
     },
     {
       "id": "daniel",
-      "frames": 48,
       "name": "Daniel",
-      "image": "daniel.png"
+      "image": "daniel.png",
+      "frames": 48
     },
     {
       "id": "dina",
-      "frames": 48,
       "name": "Dina",
-      "image": "dina.png"
+      "image": "dina.png",
+      "frames": 48
     },
     {
       "id": "farah",
-      "frames": 48,
       "name": "Farah",
-      "image": "farah.png"
+      "image": "farah.png",
+      "frames": 48
     },
     {
       "id": "hantu-raya",
-      "frames": 48,
       "name": "Hantu Raya",
-      "image": "hantu-raya.png"
+      "image": "hantu-raya.png",
+      "frames": 48
     },
     {
       "id": "kavitha",
-      "frames": 48,
       "name": "Kavitha",
-      "image": "kavitha.png"
+      "image": "kavitha.png",
+      "frames": 48
     },
     {
       "id": "langsuir",
-      "frames": 48,
       "name": "Langsuir",
-      "image": "langsuir.png"
+      "image": "langsuir.png",
+      "frames": 48
     },
     {
       "id": "lina",
-      "frames": 48,
       "name": "Lina",
-      "image": "lina.png"
+      "image": "lina.png",
+      "frames": 48
     },
     {
       "id": "mei-lin",
-      "frames": 48,
       "name": "Mei Lin",
-      "image": "mei-lin.png"
+      "image": "mei-lin.png",
+      "frames": 48
     },
     {
       "id": "orang-bunian",
-      "frames": 48,
       "name": "Orang Bunian",
-      "image": "orang-bunian.png"
+      "image": "orang-bunian.png",
+      "frames": 48
     },
     {
       "id": "pocong",
-      "frames": 48,
       "name": "Pocong",
-      "image": "pocong.png"
+      "image": "pocong.png",
+      "frames": 48
     },
     {
       "id": "pontianak",
-      "frames": 48,
       "name": "Pontianak",
-      "image": "pontianak.png"
+      "image": "pontianak.png",
+      "frames": 48
     },
     {
       "id": "suri",
-      "frames": 48,
       "name": "Suri",
-      "image": "suri.png"
+      "image": "suri.png",
+      "frames": 48
     },
     {
       "id": "toyol",
-      "frames": 48,
       "name": "Toyol",
-      "image": "toyol.png"
+      "image": "toyol.png",
+      "frames": 48
     }
   ]
 }

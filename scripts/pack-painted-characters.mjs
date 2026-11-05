@@ -23,8 +23,8 @@ for(const id of ids){
   const frame=await sharp(rgba,{raw:{width:w,height:h,channels:4}}).resize(192,256,{fit:'contain'}).png().toBuffer();
   layers.push({input:frame,left:col*192,top:row*256});
  }
- await sharp({create:{width:1536,height:1536,channels:4,background:'#00000000'}}).composite(layers).png().toFile(`${out}/${id}.png`);
- await sharp(`${out}/${id}.png`).extract({left:0,top:0,width:1536,height:1024}).png().toFile(`${out}/${id}-walk.png`);
+ await sharp({create:{width:1536,height:1536,channels:4,background:'#00000000'}}).composite(layers).png({palette:true,colours:128,dither:0}).toFile(`${out}/${id}.png`);
+ await sharp(`${out}/${id}.png`).extract({left:0,top:0,width:1536,height:1024}).png({palette:true,colours:128,dither:0}).toFile(`${out}/${id}-walk.png`);
  report.push({id,name:original.characters.find(c=>c.id===id).name,image:id+'.png',frames:48});
 }
 await writeFile(`${out}/manifest.json`,JSON.stringify({frameWidth:192,frameHeight:256,columns:8,rows:6,directions:original.directions,clips:{Idle:1,Walk:1,Wave:1.5,Celebrate:1.5},characters:report},null,2));
